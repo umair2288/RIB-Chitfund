@@ -14,13 +14,13 @@ class MainComponent extends Component
         super()
         this.state = {
             navPaneWidth: 3,
-            detailPaneWidth : 0,
-            contentPaneWidth : 21,
+            detailPaneWidth : 5,
+            contentPaneWidth : 16,
             headerPanelWidth: 21
         }
     }
 
-    openDetails = () =>{
+    opendetails = () => {
         this.setState(
             {
                 navPaneWidth: 3,
@@ -44,14 +44,14 @@ class MainComponent extends Component
             <div>
                 <Row gutter={5}>   
                     <Col span={this.state.navPaneWidth}>
-                        <NavigationPane buttonEvent={this.openDetails}></NavigationPane>
+                        <NavigationPane buttonEvent={this.opendetails}></NavigationPane>
                     </Col>   
                     {/* <Col span = {this.state.headerPanelWidth} >
                         <div style={{backgroundColor:"Black" , color:"White"}}>Header Panel</div>
                     </Col>   */}
                     {
                     this.state.detailPaneWidth ?    <Col span = {this.state.detailPaneWidth}>
-                                                        <DetailsPane></DetailsPane>
+                                                        <DetailsPane style={{height:"1000px"}}></DetailsPane>
                                                     </Col> : null
                     }
                     <Col span = {this.state.contentPaneWidth} >
