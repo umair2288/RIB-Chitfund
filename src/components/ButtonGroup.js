@@ -12,8 +12,8 @@ class ButtonGroup extends Component{
     }
 
     
-    handleClick = () =>{
-       this.props.clickHandler();
+    handleClick = (event) =>{
+      console.log("Hi")
     }
     
     render(){

@@ -1,14 +1,8 @@
 import React,{Component} from 'react'
-import {
-    Typography,
-    Button ,
- //   Form,
-    Select
-    } from 'antd'
+import {Typography,InputNumber} from 'antd'
+import ProductSelect from './ProductSelect'
 
-const {Title} = Typography
-const {Option} = Select
-
+const {Title} = Typography; 
 
 
 class DetailsPane extends Component{
@@ -17,64 +11,46 @@ class DetailsPane extends Component{
     constructor(){
         super()
         this.state= {
-            title:"hi"
+            title:"Add Product Batch"
         }
     }
 
-    onSubmit = ()=>{
-        //todo
-        console.log("On submit")
-    }
-
-    onChange = ()=>{
-        //todo
-        console.log("on change")
+    onChange = () =>{
+        console.log("to be implemented")
     }
 
 
-    
+
+
     render(){
 
-       
+        const styles= {
+            "container" : {
+                border:"1px solid black",
+                padding: "10px"
 
-      //  const { getFieldDecorator } = this.props.form;
-        // const formItemLayout = {
-        //     labelCol: { span: 6 },
-        //     wrapperCol: { span: 14 },
-        //   };
-       
+            }
+
+        }
+
+
         return(
-        <div style={{padding:"5px"}}>
-            <Title level={4}> Add New Product </Title>    
-            <hr/>   
-            <form  onSubmit={this.onChange}>
-                <Select
-                    showSearch
-                    style={{ width: 200 }}
-                    placeholder="Select a person"
-                    optionFilterProp="children"
-                    onChange={this.onChange}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
-                    onSearch={this.onSearch}
-                    filterOption={(input, option) =>
-                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
-                    <Option value="jack">Jack</Option>
-                    <Option value="lucy">Lucy</Option>
-                    <Option value="tom">Tom</Option>
-                    <Option value="man">Man</Option>
-                </Select>      
-                <Button>
-                    
-                </Button>
-            </form>
-        </div>
-        )
-        
-           
-        
+          
+            <div style={styles.container}>
+            
+                <Title level={3}>{this.state.title}</Title>
+                <form>
 
+                    <ProductSelect/>
+                    <div style={{margin:"5px 0 5px 0"}}>
+                        <label style={{display:"block"}}>No of Pieces</label>
+                        <InputNumber min={1} max={1000} defaultValue={0} onChange={this.onChange} />
+                    </div>
+                </form>
+            
+            </div>
+
+        )
     }
 
 
