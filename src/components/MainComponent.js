@@ -14,8 +14,8 @@ class MainComponent extends Component
         super()
         this.state = {
             navPaneWidth: 3,
-            detailPaneWidth : 0,
-            contentPaneWidth : 21,
+            detailPaneWidth : 5,
+            contentPaneWidth : 16,
             headerPanelWidth: 21
         }
     }

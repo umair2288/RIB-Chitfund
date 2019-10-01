@@ -7,8 +7,7 @@ class ButtonGroup extends Component{
 
     
     handleClick = (event) =>{
-       this.props.clickHandler();
-       console.log(event)
+      console.log("Hi")
     }
     
    
@@ -23,7 +22,7 @@ class ButtonGroup extends Component{
             
                  this.props.buttonList.map((button) => {
                  
-                 return <Button key={button.id} onClick = {this.handleClick()} type= "primary" style = {myStyles} block>{button.text}</Button>
+                 return <Button key={button.id} onClick = {this.handleClick} type= "primary" style = {myStyles} block>{button.text}</Button>
                  
                 }
              )
