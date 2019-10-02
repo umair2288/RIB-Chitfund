@@ -26,7 +26,7 @@ class DetailsPane extends Component{
 
         const styles= {
             "container" : {
-                border:"1px solid black",
+               // border:"1px solid black",
                 padding: "10px"
 
             }
@@ -45,6 +45,17 @@ class DetailsPane extends Component{
                     <div style={{margin:"5px 0 5px 0"}}>
                         <label style={{display:"block"}}>No of Pieces</label>
                         <InputNumber min={1} max={1000} defaultValue={0} onChange={this.onChange} />
+                    </div>
+                    <div style={{margin:"10px 0px 10px 0px" , }}>
+                        <Title level={4}>Price</Title>
+                        <div style={{margin:"0px 5px 0px 5px" , display:"inline-block"}}>
+                            <label style={{display:"block"}}>Cost Price</label>
+                            <InputNumber min={0} max={1000} defaultValue={0} onChange={this.onChange} />
+                        </div>
+                        <div style={{margin:"0px 5px 0px 5px" , display:"inline-block" }}>
+                            <label style={{display:"block"}}>Sell Price</label>
+                            <InputNumber min={0} max={1000} defaultValue={0} onChange={this.onChange} />
+                        </div>
                     </div>
                 </form>
             

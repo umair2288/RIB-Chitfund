@@ -13,9 +13,9 @@ class MainComponent extends Component
     constructor(){
         super()
         this.state = {
-            navPaneWidth: 3,
+            navPaneWidth: 4,
             detailPaneWidth : 5,
-            contentPaneWidth : 16,
+            contentPaneWidth : 13,
             headerPanelWidth: 21
         }
     }
@@ -23,9 +23,9 @@ class MainComponent extends Component
     opendetails = () => {
         this.setState(
             {
-                navPaneWidth: 3,
+                navPaneWidth: 4,
                 detailPaneWidth : 5,
-                contentPaneWidth : 16,
+                contentPaneWidth : 13,
                 headerPanelWidth: 21
             }
         )
