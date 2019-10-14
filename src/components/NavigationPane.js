@@ -13,90 +13,94 @@ class NavigationPane extends Component{
     constructor(){
         super()
         this.state = {
-            buttonList:[ 
-                {"id": 1,"text":"Products"}, {"id": 2,"text":"Customer"} , {"id": 3,"text":"Orders"}]
+          brand : "Royal Marketing"
         }
     }
 
     onCollapse = collapsed => {
         console.log(collapsed);
-        this.setState({ collapsed });
-      };
+        collapsed ? 
+        this.setState({ collapsed , brand:"RM"}):this.setState({ collapsed , brand:"Royal Marketing"})
+         
+     
+    };
+
+    handleClick = (e)=>{
+
+      if (e.key === "addCustomer")
+      {
+        console.log("addCustomer")
+      }
+
+
+    }
 
     
    
     render(){
 
-        // const styles = {
+        const styles = {
 
-        //     navPaneStyles:{
-        //         padding: "10px 5px",
-        //         backgroundColor : "LightGray",
-        //       //  borderRight : "1px solid black",
-        //         height : "500px"
+            navPaneStyles:{
+                padding: "10px 5px",
+                backgroundColor : "LightGray",
+              //  borderRight : "1px solid black",
+                height : "500px"
                 
-        //     }
+            },
+            brand:{
+             // color:"white", 
+              textAlign:"center" , 
+              fontSize:"24px",
+             marginBottom: "20px",
+            marginTop:"10px"}
     
-        // }
+         }
         // console.log(this.props.buttonEvent)
 
        return(
-        <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1">
-              <Icon type="pie-chart" />
-              <span>Option 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
+        
+       
+        <Sider theme="light" collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+          <div className="logo" style={styles.brand}>{this.state.brand}</div>
+          <Menu onSelect={this.handleClick} defaultSelectedKeys={['1']} mode="inline">
+            <Menu.Item key="1" >
               <Icon type="desktop" />
-              <span>Option 2</span>
+              <span>Dashboard</span>
             </Menu.Item>
             <SubMenu
               key="sub1"
               title={
                 <span>
                   <Icon type="user" />
-                  <span>User</span>
+                  <span>Customer</span>
                 </span>
               }
             >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
+              <Menu.Item key="addCustomer">Add Customer</Menu.Item>
+              <Menu.Item key="viewCustomer">View Customers</Menu.Item>
+            
             </SubMenu>
             <SubMenu
               key="sub2"
               title={
                 <span>
-                  <Icon type="team" />
-                  <span>Team</span>
+                  <Icon type="skin" />
+                  <span>Sales</span>
                 </span>
               }
             >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
+              <Menu.Item key="6">Add Sale</Menu.Item>
+              <Menu.Item key="8">View Orders</Menu.Item>
             </SubMenu>
             <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
+              <Icon type="user" />
+              <span>Profile</span>
             </Menu.Item>
           </Menu>
         </Sider>
-        </Layout>
-        // {/* <Layout>
-        //   <Header style={{ background: '#fff', padding: 0 }} />
-        //   <Content style={{ margin: '0 16px' }}>
-        //     <Breadcrumb style={{ margin: '16px 0' }}>
-        //       <Breadcrumb.Item>User</Breadcrumb.Item>
-        //       <Breadcrumb.Item>Bill</Breadcrumb.Item>
-        //     </Breadcrumb>
-        //     <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Bill is a cat.</div>
-        //   </Content>
-        //   <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
-        // </Layout> */}
-    //   
+        
+        
        )
     }
 
