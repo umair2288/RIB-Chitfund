@@ -32,15 +32,20 @@ class Login extends Component{
             if(response.ok)
                 return response.json()
             else{
-                throw "Login Failed"
+                throw Error("Login Failed")
             }
             }
         )
         .then(result => {
-        this.login(result.token)
-        console.log(result)}
+            this.login(result.token)
+            console.log(result)
+
+        }
         )
         .catch(error => console.log(error))  
+
+        window.location.reload()
+
     }
 
     handleChange = (event) => {
@@ -49,19 +54,24 @@ class Login extends Component{
         switch (event.target.id)
         {
         
-            case "normal_login_username" :               
+            case "normal_login_username" : {             
                 state = {
                     "username" : event.target.value,
                     "password" : this.state.password
                 }                    
                 break;
-            case "normal_login_password" :
+            }
+            case "normal_login_password" :{
                 state = {
                     "username" : this.state.username,
                     "password" : event.target.value
                 }
                  
                 break;
+            }
+            default:{
+                //
+            }
     
         }
         
@@ -110,7 +120,7 @@ class Login extends Component{
                       <a style={{float:"Right" }} href="google.com">
                         Forgot password
                       </a>
-                      <Button onClick={this.handleSubmit} type="primary" htmlType="submit"  block>
+                      <Button onClick={this.handleSubmit}  type="primary" htmlType="submit"  block>
                         Log in
                       </Button >
                       Or <a href="google.com">register now!</a>

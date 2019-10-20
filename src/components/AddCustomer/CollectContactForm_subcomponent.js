@@ -4,9 +4,12 @@ import CollectAddress from './CollectAddressForm_subcomponent'
 
 class CollectContact extends Component{
 
-    constructor(){
-        super();
+    
 
+
+    updateContact = (address_id) => {
+        console.log("i'm creating contact with address_id " + address_id)
+        this.props.callback(2)
     }
 
     render(){
@@ -57,7 +60,7 @@ class CollectContact extends Component{
                     </Row>
                     <Divider/>
                     
-                    <CollectAddress form={this.props.form}></CollectAddress>    
+                    <CollectAddress form={this.props.form} callback={this.updateContact}></CollectAddress>    
                 </div>
         )
     }

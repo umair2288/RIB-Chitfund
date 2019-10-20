@@ -1,16 +1,12 @@
 import React from 'react';
-import Home from './components/HomeComponent'
-import LoginPage from './components/Authentication/LoginPage'
-import {Form} from 'antd'
+import MainComponent from './components/MainComponent'
 import './App.css';
 
 
 function App() {
   
-  return (
-    //<Home/>
-    <LoginPage/>
-  );
+  return <MainComponent/>
+  
 }
 
 export default App;

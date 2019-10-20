@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
-import {Form ,InputNumber, Input , Row , Col ,Button , DatePicker , Modal} from 'antd'
+import {Form , Input , Row , Col ,Button , DatePicker , Modal} from 'antd'
+import customerStore from '../store/CustomerStore'
 
 class VerifyNIC extends Component{
 
@@ -28,7 +29,7 @@ class VerifyNIC extends Component{
             return true
         }
         else{
-          if (no.length==10)
+          if (no.length===10)
           {
              if(dob.substring(8,10) === no.substring(0,2))
                 return true
@@ -38,8 +39,17 @@ class VerifyNIC extends Component{
         return false      
       }
 
+ componentDidMount(){
+
+    customerStore.on("add",()=>{
+        console.log("this is called from verify nic within")
+        this.props.callback("95241147v" ,"95/08/28")
+    })
 
     
+ }
+    
+
  onDateChange = (event) => {
         if(event===null){
             return
@@ -178,8 +188,6 @@ class VerifyNIC extends Component{
                     </Col>           
                  </Row>
             </div>
-
-
         )
     }
 

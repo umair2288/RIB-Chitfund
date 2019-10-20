@@ -1,69 +1,48 @@
 import React,{Component} from 'react';
-import { Row , Col , Layout , Form} from 'antd'
+import { Layout , Form} from 'antd'
 import NavigationPane from './NavigationPane'
-import DetailsPane from './DetailsPane'
 import LoginDetails from './LoginDetails'
-import AddCustomerForm from './AddCustomerForm'
+import AddCustomerForm from './AddCustomer/AddCustomerForm'
+import Dashboard from './Dashboard/Dashboard'
+import ViewSales from './ViewSales/ViewSales'
+import AddSale from './AddSale/AddSale'
+import Profile from './Profile/Profile'
+import ViewCustomers from './ViewCustomers/ViewCustomers'
+import { BrowserRouter as Router , Route}  from 'react-router-dom'
 import 'antd/dist/antd.css'
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 
 
 class Home extends Component
 {
-    constructor(){
-        super()
-        this.state = {
-            navPaneWidth: 4,
-            detailPaneWidth : 5,
-            contentPaneWidth : 13,
-            headerPanelWidth: 21
-        }
-    }
-
-    opendetails = () => {
-        this.setState(
-            {
-                navPaneWidth: 4,
-                detailPaneWidth : 5,
-                contentPaneWidth : 13,
-                headerPanelWidth: 21
-            }
-        )
-    }
-
-
-
+   
     render(){
+    const WrapedCustomerRegForm = Form.create({ name: 'register' })(AddCustomerForm);
 
-        const myStyle = {
-            backgroundColor: "LightGray",
-        };
-
-        const WrapedCustomerRegForm = Form.create({ name: 'register' })(AddCustomerForm);
-                              
-
-        return(
-            
-                <div>   
-                
-                   < Layout >               
-                        <NavigationPane buttonEvent={this.opendetails}></NavigationPane>
-                        <Layout >
-                            <Header style={{backgroundColor:"white"}} ><LoginDetails/></Header>
-                            <Content>
-                               <div style={{backgroundColor:"White", margin:"50px" , padding:"50px"}}> 
-                                    <WrapedCustomerRegForm/>
-                               </div>
-                            </Content>
-                            <Footer>Footer</Footer>
-                        </Layout>
+        return(        
+            <div>                 
+                <Layout >  
+                <Router>             
+                    <NavigationPane buttonEvent={this.opendetails}></NavigationPane>
+                    <Layout style={{backgroundColor:"white"}} >
+                        <Header style={{backgroundColor:"white"}} ><LoginDetails token={this.props.token}/></Header>
+                        <Content>
+                            <div style={{backgroundColor:"White", margin:"0px" , padding:"50px"}}>                                 
+                                <Route path="/dashboard" component={Dashboard}/>
+                                <Route path="/addcustomer" component={WrapedCustomerRegForm}/>
+                                <Route path="/viewcustomers" component={ViewCustomers}/>
+                                <Route path="/addsale" component={AddSale}/>
+                                <Route path="/viewsales" component={ViewSales}/>
+                                <Route path="/profile" component={Profile}/>
+                            </div>
+                        </Content>
+                        <Footer style={{backgroundColor:"white"}}>Footer</Footer>
+                    </Layout>
+                </Router> 
                 </Layout>
-                     
-
             </div>
-
         );
     }
 

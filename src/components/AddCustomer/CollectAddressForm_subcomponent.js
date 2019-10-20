@@ -1,12 +1,25 @@
 import React , {Component} from 'react'
 import {Row ,Form , Input , Col} from 'antd'
+import customerStore from '../../store/CustomerStore'
 
 class CollectAddress extends Component{
 
-    constructor(){
-        super();
+   
+
+    componentDidMount(){
+
+        customerStore.on("add", ()=>{
+            console.log("run update")
+            setTimeout( () =>{    
+                console.log("i'm creating address id is 3")         
+                this.props.callback(3)
+            },2000)
+            //TODO create address in database (inactive )get id of in
+        } )
 
     }
+
+
 
     render(){
        

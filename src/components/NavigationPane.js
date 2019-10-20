@@ -1,10 +1,11 @@
 import React,{Component} from "react"
 //import ButtonGroup from './ButtonGroup'
 import 'antd/dist/antd.css'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
+import { Link }from 'react-router-dom'
 
 //const {Title} = Typography
-const { Header, Content, Footer, Sider } = Layout;
+const {  Sider } = Layout;
 const { SubMenu } = Menu;
 
 
@@ -25,18 +26,7 @@ class NavigationPane extends Component{
      
     };
 
-    handleClick = (e)=>{
 
-      if (e.key === "addCustomer")
-      {
-        console.log("addCustomer")
-      }
-
-
-    }
-
-    
-   
     render(){
 
         const styles = {
@@ -44,7 +34,7 @@ class NavigationPane extends Component{
             navPaneStyles:{
                 padding: "10px 5px",
                 backgroundColor : "LightGray",
-              //  borderRight : "1px solid black",
+              // borderRight : "1px solid black",
                 height : "500px"
                 
             },
@@ -63,11 +53,15 @@ class NavigationPane extends Component{
        
         <Sider theme="light" collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
           <div className="logo" style={styles.brand}>{this.state.brand}</div>
-          <Menu onSelect={this.handleClick} defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" >
-              <Icon type="desktop" />
-              <span>Dashboard</span>
-            </Menu.Item>
+          <Menu  defaultSelectedKeys={['1']} mode="inline">
+          
+              <Menu.Item key="dashboard" >
+                <Link to='/dashboard'> 
+                  <Icon type="desktop" />
+                  <span>Dashboard</span>
+                </Link>
+              </Menu.Item>
+            
             <SubMenu
               key="sub1"
               title={
@@ -77,8 +71,8 @@ class NavigationPane extends Component{
                 </span>
               }
             >
-              <Menu.Item key="addCustomer">Add Customer</Menu.Item>
-              <Menu.Item key="viewCustomer">View Customers</Menu.Item>
+           <Menu.Item key="addCustomer"> <Link to='/addcustomer'>Add Customer </Link></Menu.Item>
+           <Menu.Item key="viewCustomers"><Link to='/viewcustomers'>View Customers</Link></Menu.Item>
             
             </SubMenu>
             <SubMenu
@@ -90,12 +84,14 @@ class NavigationPane extends Component{
                 </span>
               }
             >
-              <Menu.Item key="6">Add Sale</Menu.Item>
-              <Menu.Item key="8">View Orders</Menu.Item>
+              <Menu.Item key="addSale">  <Link to='/addsale'>Add Sale </Link></Menu.Item>
+              <Menu.Item key="viewOrders"><Link to='/viewsales'>View Orders</Link></Menu.Item>
             </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="user" />
-              <span>Profile</span>
+            <Menu.Item key="profile">
+              <Link to='/profile'>
+                <Icon type="user" />
+                <span>Profile</span>
+              </Link>
             </Menu.Item>
           </Menu>
         </Sider>

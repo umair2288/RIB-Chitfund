@@ -6,9 +6,9 @@ import Login from './Login'
 
 class LoginPage extends Component
 {
-    constructor(){
-        super()
-    }
+    // constructor(){
+    //     super()
+    // }
     
     render(){
         const LoginWrap = Form.create({ name: 'normal_login' })(Login);
