@@ -42,15 +42,6 @@ class ViewCustomers extends Component{
     
     } 
     
-    
-        // this.setState(
-        //   { data: data }
-        // )
-     
-    
-
-    
-
     columns = [
         {
           title: 'NIC',

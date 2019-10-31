@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import {Avatar ,Typography ,Button , Row ,Col} from 'antd'
 import keys from './../keys'
 import titleStore from './../store/TitleStore'
+import dispatcher from '../dispatcher/dispatcher';
+import authStore from '../store/AuthStore';
 
 const {Title} = Typography;
 
@@ -13,7 +15,8 @@ class LoginDetails extends Component{
         super();
         this.state ={
             title : titleStore.getTitle(),
-            user: ""
+            user: "",
+            authStore : authStore.initialState
         }
     }
 
@@ -22,41 +25,14 @@ class LoginDetails extends Component{
     }
 
     handleLogout = () =>{
-        window.localStorage.removeItem("token")
-        window.location.reload(true)
+        dispatcher.dispatch({type : "LOGOUT"})
     }
 
-    componentDidMount(){
+    componentWillMount(){
+        authStore.on('update',()=>{
+            this.setState({authStore:authStore.initialState})
+        })
 
-        //compare props
-        const url = keys.server + "/user/get-user-profile/"
-        console.log("token " + window.localStorage.token)
-        fetch(url,{
-            method:"POST",
-            headers : {
-                'Content-Type': 'application/json;charset=utf-8',
-                'Authorization' : "token " + window.localStorage.token
-            }
-        })
-        .then(response => response.json())
-        .then(result => {
-            this.setState(prevState => ({
-                'title' : prevState.title,
-                'user' : result.data.Contact.PreferedName
-            }))
-            
-            }
-            )
-        .catch(error => console.log(error))
-            
-        titleStore.on("change", () => {
-            this.setState(prevState =>(
-                {
-                    "title": titleStore.getTitle(),
-                    "user": prevState.user
-                }
-            ) )
-        })
     }
     
     
@@ -64,6 +40,7 @@ class LoginDetails extends Component{
 
     render(){
 
+        const {profile} = this.state.authStore
 
         return(
             <div>
@@ -76,7 +53,7 @@ class LoginDetails extends Component{
                         <div style={{textAlign:"right", display:"inline"}} >
                             <div style={{cursor:"pointer" , display:"inline"}}>
                                 <Avatar onClick={this.handleClick}  shape = "square" style={{backgroundColor:"red" , marginRight:"10px" , cursor:"pointer"}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                <span >Hi, {this.state.user} </span>
+                                <span >Hi, {profile.Contact.FirstName} </span>
                             </div>   
                             <Button style={{margin:"5px"}} onClick={this.handleLogout}>Logout</Button>                   
                         </div>
