@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Col , Row , Divider, Button} from 'antd'
-import EditableListItem from '../GeneralComponents/EditableListItem'
 import customerStore from '../../store/CustomerStore'
 import ProductList from './ProductList'
 
