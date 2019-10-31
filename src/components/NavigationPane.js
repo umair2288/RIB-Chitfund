@@ -63,7 +63,7 @@ class NavigationPane extends Component{
               </Menu.Item>
             
             <SubMenu
-              key="sub1"
+              key="customers"
               title={
                 <span>
                   <Icon type="user" />
@@ -76,7 +76,7 @@ class NavigationPane extends Component{
             
             </SubMenu>
             <SubMenu
-              key="sub2"
+              key="sales"
               title={
                 <span>
                   <Icon type="skin" />
@@ -93,6 +93,44 @@ class NavigationPane extends Component{
                 <span>Profile</span>
               </Link>
             </Menu.Item>
+            <SubMenu
+              key="products"
+              title={
+                <span>
+                  <Icon type="stock" />
+                  <span>Products</span>
+                </span>
+              }
+            >
+              <Menu.Item key="addproduct">  <Link to='/addproduct'>Add Product </Link></Menu.Item>
+              <Menu.Item key="viewproducts"><Link to='/viewproducts'>View Products</Link></Menu.Item>
+              <Menu.Item key="deletedproducts"><Link to='/deletedproducts'>Deleted Products</Link></Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="category"
+              title={
+                <span>
+                  <Icon type="stock" />
+                  <span>Categories</span>
+                </span>
+              }
+            >
+              <Menu.Item key="addcategory">  <Link to='/addcategory'>Add Category </Link></Menu.Item>
+              <Menu.Item key="viewcategories"><Link to='/viewcategories'>View Categories</Link></Menu.Item>
+              <Menu.Item key="deletedcategories"><Link to='/deletedcategories'>Deleted Categories</Link></Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="suppiler"
+              title={
+                <span>
+                  <Icon type="shop" />
+                  <span>Supplier</span>
+                </span>
+              }
+            >
+              <Menu.Item key="addSale">  <Link to='/addsupplier'>Add Supplier </Link></Menu.Item>
+              <Menu.Item key="viewOrders"><Link to='/viewsuppliers'>View Suppliers</Link></Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         

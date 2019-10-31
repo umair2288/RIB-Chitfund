@@ -1,6 +1,6 @@
 import React ,{Component} from 'react'
 import { Form, Icon, Input, Button, Checkbox , Row , Col} from 'antd'
-import keys from '../../keys'
+import dispatcher from '../../dispatcher/dispatcher';
 
 
 
@@ -15,36 +15,9 @@ class Login extends Component{
         }
     }
 
-    login = (token) =>{
-        window.localStorage.setItem('token',token)
-    }
-
-    handleSubmit = () => {
-        const url = keys.server + "/user/get-auth-token/"
-        fetch(url,{
-            method:"POST",
-            headers : {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body : JSON.stringify(this.state)}
-        )
-        .then(response => {
-            if(response.ok)
-                return response.json()
-            else{
-                throw Error("Login Failed")
-            }
-            }
-        )
-        .then(result => {
-            this.login(result.token)
-            console.log(result)
-
-        }
-        )
-        .catch(error => console.log(error))  
-
-        window.location.reload()
+    handleSubmit = (e) => {
+        e.preventDefault()
+        dispatcher.dispatch({type : "LOGIN",data : this.state})
 
     }
 
@@ -87,7 +60,7 @@ class Login extends Component{
         return(
 
           
-                <Form  >
+                <Form onSubmit = {this.handleSubmit} >
                   <Row style={{marginTop:"200px"}}>
                     <Col span={6} offset={9} style={{backgroundColor:"rgba(0, 0, 0, 0.05)" , padding:20}}>
                     <Form.Item>
@@ -120,7 +93,7 @@ class Login extends Component{
                       <a style={{float:"Right" }} href="google.com">
                         Forgot password
                       </a>
-                      <Button onClick={this.handleSubmit}  type="primary" htmlType="submit"  block>
+                      <Button  type="primary" htmlType="submit"  block>
                         Log in
                       </Button >
                       Or <a href="google.com">register now!</a>
