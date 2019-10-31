@@ -19,6 +19,7 @@ import EditCategory from './Categories/EditCategory';
 import AddCategory from './Categories/AddCategory';
 import AddProduct from './Products/AddProduct/AddProduct';
 import DeletedProducts from './Products/DeleteProducts/DeletedProducts';
+import EditProduct from './Products/EditProduct';
 
 const { Header, Content, Footer } = Layout;
 
@@ -48,6 +49,7 @@ class Home extends Component
                                 <Route path="/addsupplier" component={AddSupplier}/>
                                 <Route path="/viewsuppliers" component={ViewSuppliers}/>
                                 <Route path="/viewproducts" component={ViewProducts}/>
+                                <Route path="/products/:prid" component={EditProduct}/>
                                 <Route path="/deletedproducts" component={DeletedProducts}/>
                                 <Route path="/addproduct" component={AddProduct}/>
                                 <Route path="/viewcategories" component={ViewCategories}/>
