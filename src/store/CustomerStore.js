@@ -35,19 +35,43 @@ class CustomerStore extends EventEmitter{
     getAllCustomers(){
         return this.customers
     }
+
+    getCustomer(id){
+
+        const customer = this.customers.filter( (customer) =>{
+            return customer.id === id
+        })
+
+        return customer;
+    }
     
-    addCustomer(){
-
+    addCustomer(customer){
+        console.log(customer)
+        const url = keys.server + '/user/add-customer/'
+        console.log("adding data..")
+        fetch(url,{
+            method:"POST",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + window.localStorage.token
+            },
+            body : JSON.stringify(customer)
+            
+        })
+        .then(response => response.json())
+        .then(result =>{ 
+            console.log(result);
+            if(result.success){         
+                console.log(result);
+            }            
+        })
+        .catch(error => {console.log(error)})
         //push to database
-        //onsuccess  update the store
-
-   //     this.customers.append(customer)
-        this.emit("add")
+        //onsuccess  update the store   
     }
 
     updateCustomers(){
-        this.fetchCustomerData()
-        
+        this.fetchCustomerData()      
     }
 
     handleActions(action){
@@ -55,7 +79,7 @@ class CustomerStore extends EventEmitter{
         switch(action.type){
 
             case "ADD_CUSTOMER":{
-                this.addCustomer()
+                this.addCustomer(action.customer)
                 break;
             }
             case "UPDATE_CUSTOMERS":{

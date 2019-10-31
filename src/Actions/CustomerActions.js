@@ -1,10 +1,10 @@
 import dispatcher from '../dispatcher/dispatcher'
 
-export function addCustomer(){
+export function addCustomer(customer){
     dispatcher.dispatch(
         {
             type : "ADD_CUSTOMER",
-          //  customer
+            customer
         }
     )
 }

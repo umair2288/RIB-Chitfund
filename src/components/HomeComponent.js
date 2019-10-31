@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Layout , Form} from 'antd'
 import NavigationPane from './NavigationPane'
 import LoginDetails from './LoginDetails'
-import AddCustomerForm from './AddCustomer/AddCustomerForm'
+import AddCustomer from './AddCustomer/AddCustomer'
 import Dashboard from './Dashboard/Dashboard'
 import ViewSales from './ViewSales/ViewSales'
 import AddSale from './AddSale/AddSale'
@@ -19,7 +19,7 @@ class Home extends Component
 {
    
     render(){
-    const WrapedCustomerRegForm = Form.create({ name: 'register' })(AddCustomerForm);
+    const WrapedCustomerRegForm = Form.create({ name: 'register' })(AddCustomer);
 
         return(        
             <div>                 

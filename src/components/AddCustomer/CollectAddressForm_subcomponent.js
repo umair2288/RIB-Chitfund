@@ -1,24 +1,54 @@
 import React , {Component} from 'react'
 import {Row ,Form , Input , Col} from 'antd'
-import customerStore from '../../store/CustomerStore'
+//import customerStore from '../../store/CustomerStore'
 
 class CollectAddress extends Component{
 
    
 
-    componentDidMount(){
+    
 
-        customerStore.on("add", ()=>{
-            console.log("run update")
-            setTimeout( () =>{    
-                console.log("i'm creating address id is 3")         
-                this.props.callback(3)
-            },2000)
-            //TODO create address in database (inactive )get id of in
-        } )
-
+    handleChange = (event) =>{
+        const id = event.target.id
+        var state = {...this.props.prevState}
+        switch(id){
+            case "register_address_no":{         
+                state.contact.Address.No = event.target.value
+                this.props.updateState(state)
+                break;
+            }
+            case "register_street":{
+             
+                state.contact.Address.Street = event.target.value
+                this.props.updateState(state)
+                break;
+            }
+            case "register_town":{
+                state.contact.Address.Town = event.target.value
+                this.props.updateState(state)
+                break;
+            }
+            case "register_district":{
+             
+                state.contact.Address.District = event.target.value
+                this.props.updateState(state)
+                break;
+            }
+            case "register_gn_division":{
+                state.contact.Address.GSDivision = event.target.value
+                this.props.updateState(state)
+                break;
+            }     
+            case "register_ds_division":{
+                state.contact.Address.DSDivision = event.target.value
+                this.props.updateState(state)
+                break;
+            }   
+            default:{
+                //default case
+            }
+        }
     }
-
 
 
     render(){
@@ -33,44 +63,44 @@ class CollectAddress extends Component{
                             <Form.Item label="No">
                                 {getFieldDecorator('address_no', {
                                     rules: [{ required: true, message: 'Please Provide a Contact Number' }],
-                                })(<Input  onChange={this.handleNameChange}/>)}
+                                })(<Input  onChange={this.handleChange}/>)}
                             </Form.Item>
                         </Col>
                         <Col span={6}>
                         <Form.Item label="Street">
                             {getFieldDecorator('street', {
                                 rules: [{ required: false, message: 'Please input the title of collection!' }],
-                            })(<Input />)}
+                            })(<Input onChange={this.handleChange}/>)}
                         </Form.Item>
                         </Col>
                         <Col span={6}>
                         <Form.Item label="Town">
                             {getFieldDecorator('town', {
                                 rules: [{ required: false, message: 'Please input the title of collection!' }],
-                            })(<Input />)}
+                            })(<Input onChange={this.handleChange}/>)}
                         </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={20}>
                     <Col span={6}>
                         <Form.Item label="District">
-                            {getFieldDecorator('address_no', {
+                            {getFieldDecorator('district', {
                                 rules: [{ required: true, message: 'Please Provide a Contact Number' }],
-                            })(<Input  onChange={this.handleNameChange}/>)}
+                            })(<Input  onChange={this.handleChange}/>)}
                         </Form.Item>
                     </Col>
                     <Col span={6}>
                     <Form.Item label="GN Division">
-                        {getFieldDecorator('street', {
+                        {getFieldDecorator('gn_division', {
                             rules: [{ required: false, message: 'Please input the title of collection!' }],
-                        })(<Input />)}
+                        })(<Input onChange={this.handleChange}/>)}
                     </Form.Item>
                     </Col>
                     <Col span={6}>
                     <Form.Item label="DS Division">
-                        {getFieldDecorator('town', {
+                        {getFieldDecorator('ds_division', {
                             rules: [{ required: false, message: 'Please input the title of collection!' }],
-                        })(<Input />)}
+                        })(<Input onChange={this.handleChange}/>)}
                     </Form.Item>
                     </Col>
                 </Row>

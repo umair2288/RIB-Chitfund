@@ -78,7 +78,7 @@ class LoginDetails extends Component{
                                 <Avatar onClick={this.handleClick}  shape = "square" style={{backgroundColor:"red" , marginRight:"10px" , cursor:"pointer"}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                 <span >Hi, {this.state.user} </span>
                             </div>   
-                            <Button style={{margin:"5px"}} onClick={this.handleLogout}>Logout</Button>                   
+                            <Button type="danger" ghost style={{margin:"5px"}} onClick={this.handleLogout}>Logout</Button>                   
                         </div>
                     </Col>
                 </Row>
