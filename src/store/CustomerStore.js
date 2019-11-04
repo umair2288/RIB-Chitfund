@@ -44,6 +44,14 @@ class CustomerStore extends EventEmitter{
 
         return customer;
     }
+
+    getCustomerByNIC(NIC){
+        const customer = this.customers.filter( (customer) =>{
+            return customer.NIC === NIC
+        })
+
+        return customer;
+    }
     
     addCustomer(customer){
         console.log(customer)

@@ -32,6 +32,10 @@ class LoginDetails extends Component{
             this.setState({authStore:authStore.initialState})
         })
 
+        titleStore.on('change',()=>{
+            this.setState({title:titleStore.getTitle()})
+        })
+
     }
     
     

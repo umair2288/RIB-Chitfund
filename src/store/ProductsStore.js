@@ -46,6 +46,10 @@ class ProductStore extends EventEmitter {
         })
     }
 
+    
+
+
+
     addProduct = ({value}) => {
         this.loadingStart()
         Axios.post(`${keys.server}/warehouse/create-product/`,value,{headers:{Authorization : `Token ${authStore.initialState.token}`}})
