@@ -3,8 +3,10 @@ import {Form, Input , Row, Col , Button} from 'antd'
 import * as titleActions from '../../Actions/TitleActions'
 import customerStore from "../../store/CustomerStore"
 import productPieceStore from "../../store/ProductPieceStore"
-import CustomerDetails from "../ViewCustomers/CustomerDetails"
-import ProductPieceDetails from '../Products/ProductPieceDetails'
+import salesStaffStore from '../../store/SalesStaffStore'
+import SalesDetails from './SalesDetails'
+//import CustomerDetails from "../ViewCustomers/CustomerDetails"
+//import ProductPieceDetails from '../Products/ProductPieceDetails'
 
 
 
@@ -14,10 +16,16 @@ class AddSale extends Component{
         NIC: "",
         product_id : "",
         customer_verified : false,
-        product_verified : false
+        product_verified : false,
+        "sale":{
+            instalment:"Weekly",
+            initial_payment:0
+        },
+        salesStaffs :[]
 
 
    }
+
 
     componentDidMount(){
         titleActions.changeTitle("Add Sale")
@@ -25,7 +33,27 @@ class AddSale extends Component{
         if(customerStore.getAllCustomers().length === 0){
             customerStore.fetchCustomerData()
         }
+
+        salesStaffStore.on("update",
+        ()=>{
+            this.setState({salesStaffs:salesStaffStore.getStaffNamesAndNIC()},console.log(this.state))
+        })
+
     }
+
+    onChange = e => {
+        console.log('radio checked', e.target.value);
+        this.setState(
+            (prevState) =>{
+                return {
+                    sale:{
+                        ...this.state.sale,
+                        instalment: e.target.value
+                    }
+                }
+            },()=>console.log(this.state)
+        );
+      };
 
     handleChange = (event)=>{
 
@@ -39,12 +67,32 @@ class AddSale extends Component{
             this.setState({product_id:event.target.value},()=>console.log(this.state))
             break;
         }
+       
         default:{
             //pass
         }
        }
 
     }
+
+    numberChange = (value) =>{
+
+    
+            this.setState(
+                (prevState) =>{
+                    return {
+                        ...prevState,
+                        "sale":{
+                            ...prevState.sale,
+                            initial_payment:value
+                        }
+                    }
+                }
+                
+                ,()=>console.log(this.state))
+          
+        }
+    
 
     handleClick = (event) => {
         switch(event.target.name){
@@ -81,7 +129,44 @@ class AddSale extends Component{
                     })                                     
                     break;
                 }
-               
+                case "confirm_sale":{
+                    //put the sale to the database
+                    
+                    //clear the state
+                    
+                    this.setState(
+                        (prevState) =>{ 
+                               return {
+                                   sale :{
+                                    "customer_id" : prevState.customer.id ,
+                                    "product_piece_id" : prevState.product.id
+                                
+                                }
+
+                            }
+                        } , ()=>console.log(this.state)
+                    )
+                    break;
+                }
+                case "cancel_sale":{
+                
+                    this.setState(
+                        {
+                           
+                            customer_verified : false,
+                            product_verified : false,
+                            "sale":{
+                                instalment:"Weekly",
+                                initial_payment:0
+                            },
+                           
+                    
+                       }
+                       , ()=>console.log(this.state)
+                    )
+                    break;
+                }
+                
             default:{
                 //pass
             }
@@ -89,53 +174,21 @@ class AddSale extends Component{
     }
 
 
-    customerDetails = ()=>{
-        if(this.state.customer_verified && this.state.product_verified)
-            return ( 
-                <div>
-                    <Row style={{padding:10}} gutter={10}>
-                        <Col span={12} style={{backgroundColor:"LightGray" , padding:10}}>
-                            <CustomerDetails {...this.state.customer}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={8}>
-                            <ProductPieceDetails {...this.state.product}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col offset={6} span={3}>
-                            <Button type="primary">Confirm Sale</Button>
-                        </Col>
-                        <Col  span={3}>
-                            <Button type="danger">Cancel Sale</Button>
-                        </Col>
-                    </Row>
-                </div>
-                )
-        if(this.state.customer_verified )
-            return ( 
-                <div>
-                    <Row style={{padding:10}} gutter={10}>
-                        <Col span={12} style={{backgroundColor:"LightGray" , padding:10}}>
-                            <CustomerDetails {...this.state.customer}/>
-                        </Col>
-                    </Row>
-                </div>
-                )
-        if( this.state.product_verified)
-            return ( 
-                <div>
-                    <Row>
-                        <Col span={8}>
-                            <ProductPieceDetails {...this.state.product}/>
-                        </Col>
-                    </Row>
-                </div>
-                )
-        
+
+    onSalePersonChange = (value)=>{
+        console.log(value)
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                sale:{
+                    ...prevState.sale,
+                    sales_person_id:value
+                }
+            }
+        },()=>console.log(this.state))
     }
 
+    
 
     render(){
         return (
@@ -164,7 +217,8 @@ class AddSale extends Component{
                         </Col>
                     </Row>
                 </Form> 
-                {this.customerDetails()}                  
+                <SalesDetails {...this.state}/>
+                              
             </div>
         )
     }

@@ -19,13 +19,20 @@ import EditCategory from './Categories/EditCategory';
 import AddCategory from './Categories/AddCategory';
 import AddProduct from './Products/AddProduct/AddProduct';
 import DeletedProducts from './Products/DeleteProducts/DeletedProducts';
-
+import productPieceStore from '../store/ProductPieceStore';
+import salesStaffStore from '../store/SalesStaffStore'
 const { Header, Content, Footer } = Layout;
 
 
 
 class Home extends Component
 {
+    componentDidMount(){
+     //  productPieceStore.loadAllProductPieces()
+     productPieceStore.loadAllProductPieces()
+     salesStaffStore.loadAllCurrentSalesStaff()
+
+    }
    
     render(){
     const WrapedCustomerRegForm = Form.create({ name: 'register' })(AddCustomer);

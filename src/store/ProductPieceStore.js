@@ -2,7 +2,8 @@ import {EventEmitter} from 'events'
 import dispatcher from '../dispatcher/dispatcher'
 import keys from '../keys'
 import authStore from '../store/AuthStore'
-import { Exception } from 'handlebars';
+
+
 
 
 
@@ -13,6 +14,34 @@ class ProductPieceStore extends EventEmitter{
         this.loading = false     
         this.productPieces=[]
     }
+
+
+    loadAllProductPieces(){
+
+        const URL = keys.server + '/warehouse/get-product-piece/?query_type=all'
+        const OPTIONS = {
+            method:"POST",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + authStore.initialState.token
+            },
+            
+            
+        }
+        this.loading =true;
+        fetch(URL,OPTIONS)
+        .then(response => {
+            return response.json()
+        })
+        .then(result =>{
+            this.productPieces = result.data
+            this.loading = false
+        })
+
+        
+
+    }
+
 
 
     getProductPieceByCode(code){
@@ -48,7 +77,7 @@ class ProductPieceStore extends EventEmitter{
                     return result.data
                 }else{
                     this.loading = false
-                    throw new Exception(result.message)
+                    throw new Error(result.message)
                    
                 }
                
@@ -64,7 +93,7 @@ class ProductPieceStore extends EventEmitter{
                 return product_piece.pop()   //if it's on store return data 
             }else{
                 this.loading = false
-                throw Exception("multiple products with same product code")  //if already sold return the error message
+                throw Error("multiple products with same product code")  //if already sold return the error message
 
             }
         }
