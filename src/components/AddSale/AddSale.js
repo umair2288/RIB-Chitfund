@@ -217,7 +217,7 @@ class AddSale extends Component{
                         </Col>
                     </Row>
                 </Form> 
-                <SalesDetails {...this.state}/>
+                <SalesDetails {...this.state  } onChange={this.onChange} handleClick={this.handleClick}/>
                               
             </div>
         )

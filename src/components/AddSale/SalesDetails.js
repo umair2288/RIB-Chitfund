@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
 
+
  const {Option} = Select
 
 
@@ -58,7 +59,7 @@ import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
                         </div>
                     </Col>
                     <Col span={6} style={{color:"Black" , padding:"5px"} }>
-                        <Radio.Group onChange={this.onChange} value={this.props.sale.instalment} label="Instalment">
+                        <Radio.Group onChange={this.props.onChange} value={this.props.sale.instalment} label="Instalment">
                             <Radio value={"Weekly"}>Weekly</Radio>
                             <Radio value={"Monthly"}>Monthly</Radio>
                         </Radio.Group>
@@ -110,10 +111,10 @@ import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
        
                 <Row style={{ margin:"5px"}}>
                     <Col offset={10} span={3}>
-                        <Button type="primary" name="confirm_sale" onClick={this.handleClick}>Confirm Sale</Button>
+                        <Button type="primary" name="confirm_sale" onClick={this.props.handleClick}>Confirm Sale</Button>
                     </Col>
                     <Col  span={3}>
-                        <Button type="danger" name="cancel_sale" onClick={this.handleClick}>Cancel Sale</Button>
+                        <Button type="danger" name="cancel_sale" onClick={this.props.handleClick}>Cancel Sale</Button>
                     </Col>
                 </Row>
             </div>
