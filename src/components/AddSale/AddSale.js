@@ -5,6 +5,9 @@ import customerStore from "../../store/CustomerStore"
 import productPieceStore from "../../store/ProductPieceStore"
 import salesStaffStore from '../../store/SalesStaffStore'
 import SalesDetails from './SalesDetails'
+import keys from '../../keys'
+import authStore from '../../store/AuthStore'
+import instalmentPlanStore from '../../store/InstalmentPlanStore'
 //import CustomerDetails from "../ViewCustomers/CustomerDetails"
 //import ProductPieceDetails from '../Products/ProductPieceDetails'
 
@@ -17,9 +20,11 @@ class AddSale extends Component{
         product_id : "",
         customer_verified : false,
         product_verified : false,
-        "sale":{
-            instalment:"Weekly",
-            initial_payment:0
+        sale:{
+            instalment_type:"Weekly",
+            initial_payment:0,
+            no_of_terms:0,
+            term_payment:0
         },
         salesStaffs :[]
 
@@ -48,7 +53,7 @@ class AddSale extends Component{
                 return {
                     sale:{
                         ...this.state.sale,
-                        instalment: e.target.value
+                        instalment_type: e.target.value
                     }
                 }
             },()=>console.log(this.state)
@@ -82,7 +87,7 @@ class AddSale extends Component{
                 (prevState) =>{
                     return {
                         ...prevState,
-                        "sale":{
+                        sale:{
                             ...prevState.sale,
                             initial_payment:value
                         }
@@ -103,7 +108,7 @@ class AddSale extends Component{
                     if(customer.length===1){
                         this.setState({
                             customer : customer.pop(),
-                            customer_verified: true
+                            customer_verified: true,
                         },()=>console.log(this.state))}
                     else{
                         if(customer.length === 0){
@@ -131,21 +136,47 @@ class AddSale extends Component{
                 }
                 case "confirm_sale":{
                     //put the sale to the database
+                    const URL =  keys.server + '/sales/add-sale/'
+                    let data = {
+                        ...this.state.sale,
+                        customer_id:this.state.customer.id,
+                        product_piece_id:this.state.product.id
+                    }
+                    const OPTIONS = {
+                        
+                            method:"POST",
+                            headers : {
+                                'Content-Type': 'application/json;charset=utf-8',
+                                'Authorization' :  "token " + authStore.initialState.token
+                            },
+                            body: JSON.stringify(data)
+
+                    }
                     
+                    fetch(URL,OPTIONS)
+                    .then(
+                        (response)=>{
+                            return response.json()
+                        }
+                    )
+                    .then(
+                        (result) =>{
+                            console.log(result)
+                            if(result.success){
+                                console.log(result.message)
+                                instalmentPlanStore.addInstalmentPlan(result.data)
+                                this.props.history.push('/instalmentplan/'+result.data.instalment_plan.id) 
+                            }
+                            
+                        }
+                    )
+                    .catch(
+                        (err)=>{
+                            console.error(err)
+                        }
+                    )
                     //clear the state
                     
-                    this.setState(
-                        (prevState) =>{ 
-                               return {
-                                   sale :{
-                                    "customer_id" : prevState.customer.id ,
-                                    "product_piece_id" : prevState.product.id
-                                
-                                }
-
-                            }
-                        } , ()=>console.log(this.state)
-                    )
                     break;
                 }
                 case "cancel_sale":{
@@ -188,6 +219,47 @@ class AddSale extends Component{
         },()=>console.log(this.state))
     }
 
+    noOfTermChange = (value) =>{
+
+        let due_amount = this.state.product.sell_price -  this.state.sale.initial_payment
+        let term_payment = due_amount/value
+
+        this.setState(
+            (prevState) =>{
+                return {
+                    ...prevState,
+                    sale:{
+                        ...prevState.sale,
+                        no_of_terms:value,
+                        term_payment:term_payment
+                    }
+                }
+            }
+            
+            ,()=>console.log(this.state))
+
+    }
+
+    termPaymentChange = (value)=>{
+
+        let due_amount = this.state.product.sell_price -  this.state.sale.initial_payment
+        let no_of_terms = due_amount/value
+
+
+        this.setState(
+            (prevState) =>{
+                return {
+                    ...prevState,
+                    sale:{
+                        ...prevState.sale,
+                        term_payment:value,
+                        no_of_terms : no_of_terms
+                    }
+                }
+            }
+            
+            ,()=>console.log(this.state))
+    }
     
 
     render(){
@@ -217,7 +289,15 @@ class AddSale extends Component{
                         </Col>
                     </Row>
                 </Form> 
-                <SalesDetails {...this.state  } onChange={this.onChange} handleClick={this.handleClick}/>
+                <SalesDetails 
+                {...this.state  } 
+                onChange={this.onChange} 
+                handleClick={this.handleClick} 
+                onSalePersonChange={this.onSalePersonChange}
+                numberChange = {this.numberChange}
+                noOfTermChange = {this.noOfTermChange}
+                termPaymentChange = {this.termPaymentChange}
+                />
                               
             </div>
         )

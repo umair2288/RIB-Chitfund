@@ -59,7 +59,7 @@ import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
                         </div>
                     </Col>
                     <Col span={6} style={{color:"Black" , padding:"5px"} }>
-                        <Radio.Group onChange={this.props.onChange} value={this.props.sale.instalment} label="Instalment">
+                        <Radio.Group onChange={this.props.onChange} value={this.props.sale.instalment_type} label="Instalment">
                             <Radio value={"Weekly"}>Weekly</Radio>
                             <Radio value={"Monthly"}>Monthly</Radio>
                         </Radio.Group>
@@ -74,7 +74,40 @@ import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
                         </div>
                     </Col>
                     <Col span={6} style={{color:"Black" , padding:"5px"} }>
-                        <InputNumber name="initial_payment" min={0}  defaultValue={0} onChange={this.numberChange} />,
+                      <InputNumber 
+                        name="initial_payment" 
+                        min={0}  defaultValue={0} 
+                        onChange={this.props.numberChange} 
+                        value = {this.props.sale.initial_payment}
+                        />,
+                    </Col>
+                   
+                </Row>
+                <Row style={{ margin:"5px"}}>
+                    <Col  span={4}>
+                        <div style={{color:"Black" , padding:"5px", textAlign:"center",marginTop:"auto" }}>
+                           Instalment Details
+                        </div>
+                    </Col>
+                    <Col span={6} style={{color:"Black" , padding:"5px"} }>
+                        <label> No of Terms</label>  
+                         <InputNumber 
+                            name="no_of_terms" 
+                            min={0} 
+                            value={this.props.sale.no_of_terms} 
+                            defaultValue={0} 
+                            onChange={this.props.noOfTermChange} 
+                        />,
+                    </Col>
+                    <Col span={6} style={{color:"Black" , padding:"5px"} }>
+                        <label > Payment per Term</label>  
+                         <InputNumber 
+                            name="term_payment" 
+                            min={0}  
+                            value={this.props.sale.term_payment} 
+                            defaultValue={0} 
+                            onChange={this.props.termPaymentChange} 
+                         />,
                     </Col>
                    
                 </Row>
@@ -90,7 +123,7 @@ import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
                         showSearch
                         style={{ width: 300 }}
                         placeholder="Select a sales person"
-                        onChange={this.onSalePersonChange}
+                        onChange={this.props.onSalePersonChange}
                         optionFilterProp="children"
                         filterOption={(input, option) =>
                         option.this.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

@@ -21,6 +21,7 @@ import AddProduct from './Products/AddProduct/AddProduct';
 import DeletedProducts from './Products/DeleteProducts/DeletedProducts';
 import productPieceStore from '../store/ProductPieceStore';
 import salesStaffStore from '../store/SalesStaffStore'
+import InstalmentPlan from './Instalment/InstalmentPlan';
 const { Header, Content, Footer } = Layout;
 
 
@@ -61,9 +62,10 @@ class Home extends Component
                                 <Route path="/addcategory" component={AddCategory}/>
                                 <Route path="/category/:catId" component={EditCategory}/>
                                 <Route path="/deletedcategories" component={DeletedCategories}/>
+                                <Route path="/instalmentplan/:planId" component={InstalmentPlan}/>
                             </div>
                         </Content>
-                        <Footer style={{backgroundColor:"white"}}>Footer</Footer>
+                        <Footer style={{backgroundColor:"white"}}>RIB Group</Footer>
                     </Layout>
                 </Router> 
                 </Layout>

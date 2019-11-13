@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import {Form , Input , Row , Col ,Button , DatePicker , Modal , Select} from 'antd'
+import key from './../../keys'
 //import customerStore from '../store/CustomerStore'
 
 const {Option} = Select;
@@ -81,9 +82,10 @@ handleSelectChange = (e) => {
 
     handleVerification = () =>{
         console.log("verifiying..")
+
         if( this.isValidNIC(this.state.data.NIC,this.state.data.DOB) )
         {
-            fetch("http://127.0.0.1:8000/user/get-customer/",{
+            fetch(key.server+"/user/get-customer/",{
                 method:"POST",
                 headers : {
                     'Content-Type': 'application/json;charset=utf-8',
