@@ -33,10 +33,6 @@ class AddCustomerForm extends Component{
     }
 
    
-
-    
-
-
     render(){
        
         return (

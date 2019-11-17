@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Form , Input , Row , Col ,Button , DatePicker , Modal , Select} from 'antd'
+import {Form , Input , Row , Col ,Button , Modal , Select} from 'antd'
 import key from './../../keys'
 //import customerStore from '../store/CustomerStore'
 
@@ -18,8 +18,6 @@ class VerifyNIC extends Component{
                 NIC : "",
                 DOB : ""
             }
-            
-
         }
     }
 
@@ -83,7 +81,8 @@ handleSelectChange = (e) => {
     handleVerification = () =>{
         console.log("verifiying..")
 
-        if( this.isValidNIC(this.state.data.NIC,this.state.data.DOB) )
+        //if( this.isValidNIC(this.state.data.NIC,this.state.data.DOB) )
+        if(true) // nic with dob verifation removed temporaryly
         {
             fetch(key.server+"/user/get-customer/",{
                 method:"POST",
@@ -167,9 +166,6 @@ handleSelectChange = (e) => {
         this.setState(state)
         callback("NIC Invalid")
 
-       
-
-
     }
 
 
@@ -180,9 +176,9 @@ handleSelectChange = (e) => {
 
     render(){
         const { getFieldDecorator } = this.props.form;
-        const config = {
-            rules: [{ type: 'object', required: true, message: 'Please Select The Date of Birth' }],
-        }
+        // const config = {
+        //     rules: [{ type: 'object', required: false, message: 'Please Select The Date of Birth' }],
+        // }
         return(
             
             <div>
@@ -191,18 +187,19 @@ handleSelectChange = (e) => {
                     <Col span={6}>
                         <Form.Item label="NIC number">
                             {getFieldDecorator('nic_no', {
-                                rules: [{ required: true, message: 'NIC number is required' , validator:this.checkNIC }],
+                                rules: [{ required: true, message: 'Valid NIC number is required' , validator:this.checkNIC }],
                             })(<Input />)}
                         </Form.Item>
                     </Col>
                     <Col span={4} >
                         <Form.Item label="Gender">
                             {getFieldDecorator('gender', {
-                                    rules: [{ required: true, message: 'Please select your gender!' }],
+                                    rules: [{ required: false, message: 'Please select your gender!' }],
                                 })(
                                     <Select
                                     placeholder="Male/Female"
                                     onChange={this.handleSelectChange}
+                                  
                                     >
                                     <Option value="M">Male</Option>
                                     <Option value="F">Female</Option>
@@ -211,11 +208,11 @@ handleSelectChange = (e) => {
                             }
                         </Form.Item>
                     </Col>  
-                    <Col span={3}>
+                    {/* <Col span={3}>
                         <Form.Item label="Date of birth">
                             {getFieldDecorator('dob', config)(<DatePicker format='YYYY-MM-DD' onChange={this.onDateChange} />)}
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                     
                     <Col span={3} style={{paddingTop:"38px"}}>
                         <Form.Item>

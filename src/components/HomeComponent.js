@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
-import { Layout , Form} from 'antd'
+import { Layout , Form}  from 'antd'
 import NavigationPane from './NavigationPane'
 import LoginDetails from './LoginDetails'
-import AddCustomer from './AddCustomer/AddCustomer'
+//import AddCustomer from './AddCustomer/AddCustomer'
 import Dashboard from './Dashboard/Dashboard'
 import ViewSales from './ViewSales/ViewSales'
 import AddSale from './AddSale/AddSale'
@@ -22,6 +22,10 @@ import DeletedProducts from './Products/DeleteProducts/DeletedProducts';
 import productPieceStore from '../store/ProductPieceStore';
 import salesStaffStore from '../store/SalesStaffStore'
 import InstalmentPlan from './Instalment/InstalmentPlan';
+
+import AddCustomerWiz from './AddCustomer/AddCustomerWiz'
+import customerStore from '../store/CustomerStore';
+import ProductRestock from './Products/ProductRestock/ProductRestock';
 const { Header, Content, Footer } = Layout;
 
 
@@ -32,11 +36,12 @@ class Home extends Component
      //  productPieceStore.loadAllProductPieces()
      productPieceStore.loadAllProductPieces()
      salesStaffStore.loadAllCurrentSalesStaff()
+     customerStore.updateCustomers()
 
     }
    
     render(){
-    const WrapedCustomerRegForm = Form.create({ name: 'register' })(AddCustomer);
+    const WrapedAddCustomerWiz = Form.create({ name: 'register' })(AddCustomerWiz);
 
         return(        
             <div>                 
@@ -48,9 +53,11 @@ class Home extends Component
                         <Content>
                             <div style={{backgroundColor:"White", margin:"0px" , padding:"50px"}}>                                 
                                 <Route path="/dashboard" component={Dashboard}/>
-                                <Route path="/addcustomer" component={WrapedCustomerRegForm}/>
+                                {/* <Route path="/addcustomer" component={WrapedCustomerRegForm}/> */}
+                                <Route path="/addcustomer" component={WrapedAddCustomerWiz}/>
                                 <Route path="/viewcustomers" component={ViewCustomers}/>
-                                <Route path="/addsale" component={AddSale}/>
+                                <Route path="/addsale/:NIC" component={AddSale}/>
+                                <Route path="/addsale" exact component={AddSale}/>
                                 <Route path="/viewsales" component={ViewSales}/>
                                 <Route path="/profile" component={Profile}/>
                                 <Route path="/addsupplier" component={AddSupplier}/>
@@ -58,6 +65,7 @@ class Home extends Component
                                 <Route path="/viewproducts" component={ViewProducts}/>
                                 <Route path="/deletedproducts" component={DeletedProducts}/>
                                 <Route path="/addproduct" component={AddProduct}/>
+                                <Route path="/productrestock" component={ProductRestock}/>
                                 <Route path="/viewcategories" component={ViewCategories}/>
                                 <Route path="/addcategory" component={AddCategory}/>
                                 <Route path="/category/:catId" component={EditCategory}/>

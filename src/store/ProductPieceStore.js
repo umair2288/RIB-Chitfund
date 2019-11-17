@@ -42,12 +42,48 @@ class ProductPieceStore extends EventEmitter{
 
     }
 
+    addProductBatch(data,successCallback,errorCallback){
+        const URL = keys.server + '/warehouse/add-product-batch/'
+        const OPTIONS = {
+            method:"POST",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + authStore.initialState.token
+            },
+            body:JSON.stringify(data)
+            
+        }
+        this.loading =true;
+
+        fetch(URL,OPTIONS)
+        .then(response =>{
+            return response.json()
+        })
+        .then(result => {
+            console.log(result)
+            if (result.success){
+                successCallback()
+                return result.data
+            }else{
+                this.loading = false
+                errorCallback()
+                throw new Error(result.message)
+               
+            }
+           
+        })
+        .catch(ex=>{
+            this.loading = false
+            console.log(ex)
+        })         
+    }
 
 
-    getProductPieceByCode(code){
+    getProductPieceByCode(code,errorCallback){
         //check the store for the product piece
         const product_piece = this.productPieces.filter((pp)=>{
             return pp.item_code === code;
+
         })
       
         if (product_piece.length === 0){
@@ -77,6 +113,7 @@ class ProductPieceStore extends EventEmitter{
                     return result.data
                 }else{
                     this.loading = false
+                    errorCallback()
                     throw new Error(result.message)
                    
                 }

@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Row,Col,Button} from 'antd'
+import {Row,Col,Button , Alert} from 'antd'
 import AddCustomerForm from './AddCustomerForm'
 import * as customerActions from '../../Actions/CustomerActions'
 //mport customerStore from '../../store/CustomerStore'
@@ -13,10 +13,8 @@ class AddCustomer extends Component{
         super()
         this.state = {
             "NIC": "",
-            "DOB": "",
+            "DOB": null,
             "Gender": "",
-        //    "LastModified": null,
-        //    "RegisteredDate": null,
             "User": null,
             "RegisteredByEmployee": null,
             "AlternativeContact": null,
@@ -47,7 +45,14 @@ class AddCustomer extends Component{
 
     handleClick = ()=>{
         console.log(this.state)
-        customerActions.addCustomer(this.state)
+        if( customerActions.addCustomer(this.state) ){
+            console.log("customer added successfully")
+        }else{
+            console.error("customer adding failed")
+            
+            return <Alert type="error" message="Error text" banner />
+
+        }
     }
 
     updateState = (newState) =>{

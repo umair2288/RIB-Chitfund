@@ -3,6 +3,7 @@ import dispatcher from "../dispatcher/dispatcher";
 import Axios from "axios";
 import { message } from "antd";
 import keys from "../keys";
+import authStore from "./AuthStore"
 
 
 class SupplierStore extends EventEmitter {
@@ -32,6 +33,73 @@ class SupplierStore extends EventEmitter {
             ()=>this.emit("update"),
             1000
         )
+    }
+
+
+    addNewSupplier(data, successCallback, errorCallback){
+
+        const URL = keys.server + '/warehouse/create-supplier/'
+        const OPTIONS = {
+            method:"POST",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + authStore.initialState.token
+            },
+            body:JSON.stringify(data)
+        }
+        
+        fetch(URL,OPTIONS)
+        .then( (response) =>{
+            return response.json()
+        })
+        .then((result)=>{
+            if (result.success){
+                this.initialState.suppliers.push(result.data)
+                this.emit("update")
+                successCallback()
+            }
+            else{
+                errorCallback()
+            }
+        }
+        )
+        .catch((error) => {
+            errorCallback()
+        })
+    }
+
+    fetchAllSuppliersData(successCallback,errorCallback){
+
+        const URL = keys.server + '/warehouse/get-suppliers/?id=all'
+        const OPTIONS = {
+            method:"GET",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + authStore.initialState.token
+            },
+        }
+        
+        fetch(URL,OPTIONS)
+        .then( (response) =>{
+            return response.json()
+        })
+        .then((result)=>{
+            if (result.success){
+                this.initialState.suppliers=result.data
+                this.emit("update")
+                successCallback(this.initialState.suppliers)
+            }
+            else{
+                errorCallback()
+                console.log("error")
+            }
+        }
+        )
+        .catch((error) => {
+            errorCallback()
+            console.log("error")
+        })
+
     }
 
     fetchAllSuppliers = ({token}) => {
@@ -110,7 +178,7 @@ class SupplierStore extends EventEmitter {
             }
         ]
         this.loadingStart()
-        Axios.get(`${keys.server}/`,{headers:{Authorization : `Token ${token}`}})
+        Axios.get(`${keys.server}/warehouse/get-suppliers/?id=all`,{headers:{Authorization : `Token ${token}`}})
         .then(()=>{
             this.initialState.suppliers = data
             this.loadingEnd()

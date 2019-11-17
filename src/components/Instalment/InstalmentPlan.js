@@ -22,7 +22,8 @@ class InstalmentPlan extends Component{
                 }
                 , ()=> console.log(this.state)
             )
-       }      
+       }
+         
     }
 
 

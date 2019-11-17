@@ -1,5 +1,5 @@
 import React , {Component} from 'react'
-import {Form, Input , Row, Col , Button} from 'antd'
+import {Form, Input , Row, Col , Button, message}  from 'antd'
 import * as titleActions from '../../Actions/TitleActions'
 import customerStore from "../../store/CustomerStore"
 import productPieceStore from "../../store/ProductPieceStore"
@@ -16,7 +16,7 @@ import instalmentPlanStore from '../../store/InstalmentPlanStore'
 class AddSale extends Component{
 
    state = {
-        NIC: "",
+        NIC: this.props.match.params.NIC,
         product_id : "",
         customer_verified : false,
         product_verified : false,
@@ -65,11 +65,11 @@ class AddSale extends Component{
        switch(event.target.name){
 
         case "nic":{
-            this.setState({NIC:event.target.value},()=>console.log(this.state))
+            this.setState({NIC:event.target.value , customer_verified:false},()=>console.log(this.state))
             break;
         }
         case "product_id":{
-            this.setState({product_id:event.target.value},()=>console.log(this.state))
+            this.setState({product_id:event.target.value, product_verified:false},()=>console.log(this.state))
             break;
         }
        
@@ -113,6 +113,7 @@ class AddSale extends Component{
                     else{
                         if(customer.length === 0){
                             console.log("please register the customer first")
+                            message.error("Seems like a new customer, please register the customer first!")
                         }else{
                             console.log("Error, multiple customers with on NIC")
                         }                        
@@ -122,7 +123,9 @@ class AddSale extends Component{
                 case "add_product":{
                 
                     new Promise((resolve,reject)=>{
-                        const product = productPieceStore.getProductPieceByCode(this.state.product_id)
+                        const product = productPieceStore.getProductPieceByCode(this.state.product_id,
+                            ()=>message.error("Seems like product piece does not exists!"))
+
                         if (product){
                             resolve(product)
                         }else{
@@ -131,7 +134,14 @@ class AddSale extends Component{
                     })
                     .then(product=>{
                         this.setState({product:product, product_verified:true},()=>{console.log(this.state)})
-                    })                                     
+                    })
+                    .catch(
+                        (error) =>{
+                          //  message.error("Seems product piece does not exists!")
+                            console.error(error)
+
+                        }
+                    )                                    
                     break;
                 }
                 case "confirm_sale":{
@@ -263,13 +273,14 @@ class AddSale extends Component{
     
 
     render(){
+        console.log(this.props.match)
         return (
             <div>
                 <Form>
                     <Row gutter={10}>
                         <Col span={6}>
                             <Form.Item>
-                                <Input name="nic" onChange={this.handleChange} placeholder="Customer NIC Number"></Input>
+                                <Input name="nic" value={this.state.NIC} onChange={this.handleChange} placeholder="Customer NIC Number"></Input>
                             </Form.Item> 
                         </Col>
                         <Col span={3}>
@@ -279,7 +290,7 @@ class AddSale extends Component{
                         </Col>
                         <Col span={6}>
                             <Form.Item>
-                                <Input name="product_id" onChange={this.handleChange} placeholder="Product Piece ID"></Input>
+                                <Input name="product_id" value={this.state.product_id} onChange={this.handleChange} placeholder="Product Piece ID"></Input>
                             </Form.Item> 
                         </Col>
                         <Col span={3}>

@@ -4,6 +4,7 @@ import Axios from "axios";
 import keys from "../keys";
 import authStore from "./AuthStore";
 import { message } from "antd";
+import { callbackify } from "util";
 
 
 class ProductStore extends EventEmitter {
@@ -48,6 +49,76 @@ class ProductStore extends EventEmitter {
 
     
 
+    getCategorizedProducts(callback){
+
+        const URL = keys.server+'/warehouse/get-categorized-products/'
+        const OPTIONS = {
+            method:"GET",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + authStore.initialState.token
+            }
+        }    
+       fetch(URL,OPTIONS)
+            .then(
+                (response) => {
+                  
+                return response.json()
+                   
+                }
+            )
+            .then(
+                (result) => {
+                    if(result.success){
+                       callback(result.data)
+                    }
+                }
+            )
+            .catch(
+                err => {
+                    console.error(err)
+                   // reject(err)
+                }
+                
+            )
+        }
+    
+    
+    getWarehouses(callback){
+
+        const URL = keys.server+'/warehouse/get-warehouses/?type=royalmarketing'
+        const OPTIONS = {
+            method:"GET",
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization' : "token " + authStore.initialState.token
+            }
+        }    
+       fetch(URL,OPTIONS)
+            .then(
+                (response) => {
+                  
+                return response.json()
+                   
+                }
+            )
+            .then(
+                (result) => {
+                    if(result.success){
+                       callback(result.data)
+                    }
+                }
+            )
+            .catch(
+                err => {
+                    console.error(err)
+                   // reject(err)
+                }
+                
+            )
+
+
+    }
 
 
     addProduct = ({value}) => {
