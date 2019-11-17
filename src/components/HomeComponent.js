@@ -19,9 +19,13 @@ import EditCategory from './Categories/EditCategory';
 import AddCategory from './Categories/AddCategory';
 import AddProduct from './Products/AddProduct/AddProduct';
 import DeletedProducts from './Products/DeleteProducts/DeletedProducts';
+
 import productPieceStore from '../store/ProductPieceStore';
 import salesStaffStore from '../store/SalesStaffStore'
 import InstalmentPlan from './Instalment/InstalmentPlan';
+
+import EditProduct from './Products/EditProduct';
+
 
 import AddCustomerWiz from './AddCustomer/AddCustomerWiz'
 import customerStore from '../store/CustomerStore';
@@ -63,6 +67,7 @@ class Home extends Component
                                 <Route path="/addsupplier" component={AddSupplier}/>
                                 <Route path="/viewsuppliers" component={ViewSuppliers}/>
                                 <Route path="/viewproducts" component={ViewProducts}/>
+                                <Route path="/products/:prid" component={EditProduct}/>
                                 <Route path="/deletedproducts" component={DeletedProducts}/>
                                 <Route path="/addproduct" component={AddProduct}/>
                                 <Route path="/productrestock" component={ProductRestock}/>
