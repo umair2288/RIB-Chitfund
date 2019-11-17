@@ -1,49 +1,47 @@
 import React ,{Component} from 'react';
 import * as titleActions from '../../Actions/TitleActions'
-import QrReader from 'react-qr-reader'
-import beepSound from '../../assets/beep-07.wav'
+import {Card , Row , Col} from 'antd' 
+
 
 class Dashboard extends Component{
 
    state = {
-       result : 'No result',
-       delay : 1000
+       todaySales: 0,
+       todayCollection:0,
+       amountOverDue:0
+       
    }
 
     componentDidMount(){
         titleActions.changeTitle("Dashboard")
-        this.beep = new Audio(beepSound)
-
+      
     }
-    handleScan = (data) => {
-        if(data != null){
-            this.beep.play()
-            this.setState({
-                result: data,
-              })
-        }
-        return
-        
-      }
-      handleError(err){
-        console.error(err)
-      }
+   
 
     render(){
-        // const previewStyle = {
-        //     height: 'auto',
-        //     width: '150%',
-        //   }
-        return (<div>
-            <h2> Dashboard </h2>
-        <QrReader
-          delay={this.state.delay}
-          onError={this.handleError}
-          onScan={this.handleScan}
-          style = {{width : '50%'}}
-          />
-        <p>{this.state.result}</p>
-      </div>)
+        return (
+            <div style={{  padding: '30px' }}>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Card title="Today Sales" bordered={false}>
+                    {"LKR " + this.state.todaySales}
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card title="Today Collection" bordered={false}>
+                    {"LKR " + this.state.todayCollection}
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card title="Amount Over Due" bordered={false}>
+                    {"LKR " + this.state.amountOverDue}
+                </Card>
+              </Col>
+            </Row>
+          </div>
+        )
+           
+        
     }
 }
 
