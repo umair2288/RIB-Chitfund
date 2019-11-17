@@ -6,7 +6,6 @@ class CustomerStore extends EventEmitter{
 
     constructor(){
         super();
-        console.log("Customer Store constructor called")
         this.customers=[]
     }
 
@@ -44,8 +43,16 @@ class CustomerStore extends EventEmitter{
 
         return customer;
     }
+
+    getCustomerByNIC(NIC){
+        const customer = this.customers.filter( (customer) =>{
+            return customer.NIC === NIC
+        })
+
+        return customer;
+    }
     
-    addCustomer(customer){
+    addCustomer(customer,successCallback,errorCallback){
         console.log(customer)
         const url = keys.server + '/user/add-customer/'
         console.log("adding data..")
@@ -62,10 +69,17 @@ class CustomerStore extends EventEmitter{
         .then(result =>{ 
             console.log(result);
             if(result.success){         
-                console.log(result);
-            }            
+                successCallback()
+            }  
+            else{
+                errorCallback()  
+            }
+                 
         })
-        .catch(error => {console.log(error)})
+        .catch(error => {
+            console.log(error)
+            errorCallback()
+        })
         //push to database
         //onsuccess  update the store   
     }

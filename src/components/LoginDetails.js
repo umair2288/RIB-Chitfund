@@ -32,6 +32,10 @@ class LoginDetails extends Component{
             this.setState({authStore:authStore.initialState})
         })
 
+        titleStore.on('change',()=>{
+            this.setState({title:titleStore.getTitle()})
+        })
+
     }
     
     
@@ -51,7 +55,7 @@ class LoginDetails extends Component{
                     <Col style={{textAlign:"right"}} span={14}>
                         <div style={{textAlign:"right", display:"inline"}} >
                             <div style={{cursor:"pointer" , display:"inline"}}>
-                                <Avatar onClick={this.handleClick}  shape = "square" style={{backgroundColor:"red" , marginRight:"10px" , cursor:"pointer"}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                <Avatar onClick={this.handleClick}  shape = "square" style={{backgroundColor:"red" , marginRight:"10px" , cursor:"pointer"}} src="img/login_icon.png" />
                                 <span >Hi, {profile.Contact.FirstName} </span>
                             </div>   
                             <Button type="danger" ghost style={{margin:"5px"}} onClick={this.handleLogout}>Logout</Button>                   
