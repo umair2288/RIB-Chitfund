@@ -16,7 +16,7 @@ class ProductPieceStore extends EventEmitter{
     }
 
 
-    loadAllProductPieces(){
+    loadAllProductPieces(callback){
 
         const URL = keys.server + '/warehouse/get-product-piece/?query_type=all'
         const OPTIONS = {
@@ -36,6 +36,7 @@ class ProductPieceStore extends EventEmitter{
         .then(result =>{
             this.productPieces = result.data
             this.loading = false
+            callback()
         })
 
         
@@ -137,6 +138,22 @@ class ProductPieceStore extends EventEmitter{
         
         //if not in the database return the error message message
        
+    }
+
+
+
+    getProductPiecesByProductId(id,callback){
+        this.loadAllProductPieces(
+            ()=>{
+                const productPieces = this.productPieces.filter(
+                    (pp)=>{
+                        return pp.batch.product.id === id
+                    }
+                )      
+                callback(productPieces)
+            }
+        )
+     
     }
 
     handleActions(action){

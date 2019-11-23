@@ -1,5 +1,5 @@
 import React , {Component} from 'react'
-import {Form, Input , Row, Col , Button, message}  from 'antd'
+import {Form, Input , Row, Col , Button, message , Select}  from 'antd'
 import * as titleActions from '../../Actions/TitleActions'
 import customerStore from "../../store/CustomerStore"
 import productPieceStore from "../../store/ProductPieceStore"
@@ -8,16 +8,18 @@ import SalesDetails from './SalesDetails'
 import keys from '../../keys'
 import authStore from '../../store/AuthStore'
 import instalmentPlanStore from '../../store/InstalmentPlanStore'
+import ProductCascader from '../GeneralComponents/ProductCascader'
 //import CustomerDetails from "../ViewCustomers/CustomerDetails"
 //import ProductPieceDetails from '../Products/ProductPieceDetails'
 
-
+const {Option} = Select
 
 class AddSale extends Component{
 
    state = {
         NIC: this.props.match.params.NIC,
         product_id : "",
+        product_pieces:[],
         customer_verified : false,
         product_verified : false,
         sale:{
@@ -26,11 +28,10 @@ class AddSale extends Component{
             no_of_terms:0,
             term_payment:0
         },
-        salesStaffs :[]
+        salesStaffs :salesStaffStore.getStaffNamesAndNIC()
 
 
    }
-
 
     componentDidMount(){
         titleActions.changeTitle("Add Sale")
@@ -41,9 +42,16 @@ class AddSale extends Component{
 
         salesStaffStore.on("update",
         ()=>{
-            this.setState({salesStaffs:salesStaffStore.getStaffNamesAndNIC()},console.log(this.state))
+            this.setState({salesStaffs:salesStaffStore.getStaffNamesAndNIC()},()=>console.log(this.state))
         })
 
+    }
+
+    onProductPieceChanged = (value) =>{
+       // console.log(value)
+        this.setState({
+            product_id:value
+        },()=>console.log(this.state))
     }
 
     onChange = e => {
@@ -271,6 +279,16 @@ class AddSale extends Component{
             ,()=>console.log(this.state))
     }
     
+    productCascaderChanged= (value) =>{
+        console.log(value[1])
+        productPieceStore.getProductPiecesByProductId(value[1],
+            (product_pieces) =>{
+                this.setState({
+                    product_pieces: product_pieces
+                },()=>console.log(this.state))
+            })
+        
+    }
 
     render(){
         console.log(this.props.match)
@@ -288,9 +306,23 @@ class AddSale extends Component{
                                 <Button name="verify" onClick={this.handleClick} type="primary">Verify</Button>
                             </Form.Item> 
                         </Col>
-                        <Col span={6}>
+                        <Col span={4}>
                             <Form.Item>
-                                <Input name="product_id" value={this.state.product_id} onChange={this.handleChange} placeholder="Product Piece ID"></Input>
+                                <ProductCascader onChange={this.productCascaderChanged}></ProductCascader>
+                            </Form.Item> 
+                        </Col>
+                        <Col span={3}>
+                            <Form.Item>
+                                <Select name="product_id" showSearch  onChange={this.onProductPieceChanged} placeholder="Product Piece ID">
+                                    {
+                                      
+                                         this.state.product_pieces.map(
+                                            (pp) => {
+                                               return <Option key = {pp.id} value={pp.item_code} >{pp.item_code}</Option>
+                                            }
+                                        )
+                                    }
+                                </Select>
                             </Form.Item> 
                         </Col>
                         <Col span={3}>

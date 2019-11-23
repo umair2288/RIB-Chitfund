@@ -38,10 +38,9 @@ class Home extends Component
 {
     componentDidMount(){
      //  productPieceStore.loadAllProductPieces()
-     productPieceStore.loadAllProductPieces()
-     salesStaffStore.loadAllCurrentSalesStaff()
+     productPieceStore.loadAllProductPieces(()=>console.log("product pieces loaded"))
+     salesStaffStore.loadAllCurrentSalesStaff(()=>console.log("sales staffs loaded"))
      customerStore.updateCustomers()
-
     }
    
     render(){
