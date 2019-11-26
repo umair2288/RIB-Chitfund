@@ -7,7 +7,7 @@ import salesStaffStore from '../../store/SalesStaffStore'
 import SalesDetails from './SalesDetails'
 import keys from '../../keys'
 import authStore from '../../store/AuthStore'
-import instalmentPlanStore from '../../store/InstalmentPlanStore'
+import instalmentStore from '../../store/InstalmentStore'
 import ProductCascader from '../GeneralComponents/ProductCascader'
 //import CustomerDetails from "../ViewCustomers/CustomerDetails"
 //import ProductPieceDetails from '../Products/ProductPieceDetails'
@@ -174,7 +174,10 @@ class AddSale extends Component{
                     fetch(URL,OPTIONS)
                     .then(
                         (response)=>{
-                            return response.json()
+                            if(response.ok)
+                                return response.json()
+                            else
+                                message.error("request failed.")
                         }
                     )
                     .then(
@@ -182,7 +185,7 @@ class AddSale extends Component{
                             console.log(result)
                             if(result.success){
                                 console.log(result.message)
-                                instalmentPlanStore.addInstalmentPlan(result.data)
+                                instalmentStore.addInstalmentPlan(result.data)
                                 this.props.history.push('/instalmentplan/'+result.data.instalment_plan.id) 
                             }
                             

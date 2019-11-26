@@ -1,11 +1,13 @@
 import React from 'react';
 import MainComponent from './components/MainComponent'
 import './App.css';
+//import QRCodes from './components/Products/ProductRestock/QRCodes'
 
 
 function App() {
   
-  return <MainComponent/>
+    return <MainComponent/>
+//   return <QRCodes/>
   
 }
 

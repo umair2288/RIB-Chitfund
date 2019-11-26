@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import instalmentPlanStore from './../../store/InstalmentPlanStore'
+import instalmentStore from './../../store/InstalmentStore'
 import {Col, Row, Table} from 'antd'
 
 class InstalmentPlan extends Component{
@@ -14,8 +14,8 @@ class InstalmentPlan extends Component{
 
     componentDidMount(){
            
-       if(instalmentPlanStore.getInstalmePlanById(this.props.match.planId).length > 0 ){
-            let data = instalmentPlanStore.getInstalmePlanById(this.props.match.planId).pop()
+       if(instalmentStore.getInstalmePlanById(this.props.match.planId).length > 0 ){
+            let data = instalmentStore.getInstalmePlanById(this.props.match.planId).pop()
             this.setState(
                 {
                  data:data

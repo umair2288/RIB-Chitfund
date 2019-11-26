@@ -33,7 +33,7 @@ class InstalmentStore extends EventEmitter{
     }
 }
 
-const titleStore = new InstalmentStore()
-dispatcher.register(titleStore.handleActions.bind(titleStore))
+const instalmentStore = new InstalmentStore()
+dispatcher.register(instalmentStore.handleActions.bind(instalmentStore))
 window.dispatcher = dispatcher;
-export default titleStore;
+export default instalmentStore;
