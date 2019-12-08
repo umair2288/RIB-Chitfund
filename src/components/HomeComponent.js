@@ -19,10 +19,11 @@ import EditCategory from './Categories/EditCategory';
 import AddCategory from './Categories/AddCategory';
 import AddProduct from './Products/AddProduct/AddProduct';
 import DeletedProducts from './Products/DeleteProducts/DeletedProducts';
-
 import productPieceStore from '../store/ProductPieceStore';
 import salesStaffStore from '../store/SalesStaffStore'
 import InstalmentPlan from './Instalment/InstalmentPlan';
+import AddPayments from './Payments/AddPayments'
+import ViewPayments from './Payments/ViewPayment'
 
 import EditProduct from './Products/EditProduct';
 
@@ -30,6 +31,7 @@ import EditProduct from './Products/EditProduct';
 import AddCustomerWiz from './AddCustomer/AddCustomerWiz'
 import customerStore from '../store/CustomerStore';
 import ProductRestock from './Products/ProductRestock/ProductRestock';
+import salesStore from '../store/SalesStore';
 const { Header, Content, Footer } = Layout;
 
 
@@ -38,10 +40,10 @@ class Home extends Component
 {
     componentDidMount(){
      //  productPieceStore.loadAllProductPieces()
-     productPieceStore.loadAllProductPieces()
-     salesStaffStore.loadAllCurrentSalesStaff()
+     productPieceStore.loadAllProductPieces(()=>console.log("product pieces loaded"))
+     salesStaffStore.loadAllCurrentSalesStaff(()=>console.log("sales staffs loaded"))
+     salesStore.getAllSales()
      customerStore.updateCustomers()
-
     }
    
     render(){
@@ -76,6 +78,10 @@ class Home extends Component
                                 <Route path="/category/:catId" component={EditCategory}/>
                                 <Route path="/deletedcategories" component={DeletedCategories}/>
                                 <Route path="/instalmentplan/:planId" component={InstalmentPlan}/>
+
+                                <Route path="/addpayments/" component={AddPayments}/>
+                                <Route path="/viewpayments/" component={ViewPayments}/>
+                                {/* <Route path="/productbatch/1" component={QRCodes}/> */}
                             </div>
                         </Content>
                         <Footer style={{backgroundColor:"white"}}>RIB Group</Footer>

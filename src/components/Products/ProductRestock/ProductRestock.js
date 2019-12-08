@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {Form , Input , Select, Row, Col , Cascader, InputNumber, Button, message , Modal} from 'antd'
+import {Form , Input , Select, Row, Col ,InputNumber, Button, message , Modal} from 'antd'
 import * as titleActions from '../../../Actions/TitleActions'
 import productsStore from '../../../store/ProductsStore'
 import productPieceStore from '../../../store/ProductPieceStore'
 import supplierStore from '../../../store/SupplierStore'
-
+import ProductCascader from '../../GeneralComponents/ProductCascader'
 
 const {Option} = Select
 
@@ -13,7 +13,6 @@ class ProductRestock extends Component{
     state = {
         modal_visible : false,
         modal_loading : false,
-        product_options: [],
         warehouse_options:[],
         supplier_options:supplierStore.initialState.suppliers,
         data:{
@@ -27,7 +26,6 @@ class ProductRestock extends Component{
 
     componentDidMount(){
         titleActions.changeTitle("Product Restock")
-        productsStore.getCategorizedProducts(this.setData)
         productsStore.getWarehouses(this.setWarehouseOptions)
         supplierStore.fetchAllSuppliersData((data)=>{
             this.setState({
@@ -39,37 +37,7 @@ class ProductRestock extends Component{
         })
     }
 
-    formatOptions = () =>{
-        let options = this.state.product_data.map(
-            (cat) => {
-                return {
-                    value : cat.id,
-                    label : cat.title,
-                    children : cat.products.map(
-                        (pro) =>{
-                            return {
-                                value : pro.id,
-                                label : pro.title
-                            }
-                        }
-                    )
-                }
-            }
-        )
-
-        this.setState({product_options:options})
-
-    }
     
-    setData=(data)=>{
-        this.setState({
-            product_data:data
-        },()=>{
-            console.log(this.state)
-            this.formatOptions()
-        }
-       )
-    }
 
     setWarehouseOptions = (data) =>{
         this.setState(
@@ -187,6 +155,7 @@ class ProductRestock extends Component{
         productPieceStore.addProductBatch(this.state.data,
             () => {
                 message.success("Product batch added")
+                
             },
             () =>{
                 message.error("Adding product batch failed")
@@ -257,11 +226,14 @@ class ProductRestock extends Component{
             <Row>
                 <Col span={6}>
                     <Form.Item label="Product">
-                    <Cascader
+                    {/* <Cascader
                             options={this.state.product_options}
                             expandTrigger="hover"
                             displayRender={this.displayRender}
-                            onChange={this.onChange}/>
+                            onChange={this.onChange}/> */}
+                        <ProductCascader
+                         onChange={this.onChange}
+                         ></ProductCascader>
                     </Form.Item>
                 </Col>
                 <Col span={6}>
@@ -275,7 +247,7 @@ class ProductRestock extends Component{
                     <Form.Item label="Cost Price">
                         <InputNumber style={{width:"150px"}}
                         min={0} 
-                        formatter={value => `Rs.${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        formatter={value => `Rs.${value}`}
                         parser={value => value.replace("Rs.", '')}
                         value={this.state.data.cost_price} 
                         onChange={this.costPriceChanged}></InputNumber>
@@ -285,7 +257,7 @@ class ProductRestock extends Component{
                     <Form.Item label="Sell Price" >
                         <InputNumber style={{width:"150px"}} 
 
-                        formatter={value => `Rs.${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        formatter={value => `Rs.${value}`}
                         parser={value => value.replace("Rs.", '')}
                         min={0} 
                         value={this.state.data.sell_price} 

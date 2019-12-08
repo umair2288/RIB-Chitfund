@@ -13,7 +13,7 @@ class SalesStaffStore extends EventEmitter{
         this.salesStaffs = [];
     }
 
-    loadAllCurrentSalesStaff(){
+    loadAllCurrentSalesStaff(callback){
         const URL = keys.server + '/user/get-all-current-staffs/'
         const OPTIONS = {
             method:"POST",
@@ -30,6 +30,7 @@ class SalesStaffStore extends EventEmitter{
         .then(result => {
             this.salesStaffs = result.data
             this.emit("update")
+            callback()
         })
         .catch(error => {
             throw Error(error)

@@ -53,7 +53,7 @@ class DeletedProducts extends React.Component {
         let newProducts = []
         for (let product of products){
             if(!product.is_current){
-                newProducts.push(product)
+                newProducts.push({...product , key: product.id})
             }
         }
         return (

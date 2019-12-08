@@ -170,7 +170,7 @@ import { Row, Col , Button , Radio , InputNumber , Select} from 'antd'
                         {this.props.customer.contact.FirstName + ' ' + this.props.customer.contact.LastName}
                     </div>
               </Col>
-              
+            
             </Row>
            
             )

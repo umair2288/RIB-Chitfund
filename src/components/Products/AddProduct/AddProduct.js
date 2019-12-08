@@ -54,7 +54,7 @@ class AddProduct extends React.Component {
                         
                     >
                     {categories.map((category,i)=>
-                        <Option value = {category.id} >{category.title}</Option>    
+                        <Option  key = {category.id} value = {category.id} >{category.title}</Option>    
                     )} 
                     </Select>
                 </Form.Item>
