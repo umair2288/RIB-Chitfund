@@ -30,7 +30,7 @@ class EditProduct extends React.Component {
 
         const {products,categories,loading} = this.state.productStore
 
-        const index = products.findIndex(product => product.id == this.props.match.params.prid)
+        const index = products.findIndex(product => product.id === this.props.match.params.prid)
 
         const product = products[index]
 

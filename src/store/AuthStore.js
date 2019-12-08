@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import dispatcher from "../dispatcher/dispatcher";
 import keys from "../keys";
 import Axios from "axios";
+import { message } from "antd";
 
 
 class AuthStore extends EventEmitter {
@@ -60,11 +61,18 @@ class AuthStore extends EventEmitter {
         this.loadingStart()
         Axios.post(url,data)
         .then(({data})=>{
-            localStorage.setItem('token',data.token)
-            this.initialState.token = data.token
-            this.autoCheckState()
+            if(data.token){
+                localStorage.setItem('token',data.token)
+                this.initialState.token = data.token
+                this.autoCheckState()
+            }
+            else{
+                console.log("Login failed")
+                message.error("Username or password is wrong")
+            }
         })
         .catch(error=>{
+            message.error("Login failed")
             console.log(error)
             this.loadingEnd()
 
