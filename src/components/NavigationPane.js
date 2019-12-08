@@ -14,14 +14,14 @@ class NavigationPane extends Component{
     constructor(){
         super()
         this.state = {
-          brand : "Royal Marketing"
+          brand : <img src="rm_logo.png" width={196}></img>
         }
     }
 
     onCollapse = collapsed => {
         console.log(collapsed);
         collapsed ? 
-        this.setState({ collapsed , brand:"RM"}):this.setState({ collapsed , brand:"Royal Marketing"})
+        this.setState({ collapsed , brand:<img src="rm_logo.png" width={96}></img>}):this.setState({ collapsed , brand:<img src="rm_logo.png" width={196}></img>})
          
      
     };
