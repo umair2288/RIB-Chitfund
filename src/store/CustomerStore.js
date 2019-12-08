@@ -70,6 +70,7 @@ class CustomerStore extends EventEmitter{
             console.log(result);
             if(result.success){         
                 successCallback()
+                this.updateCustomers()
             }  
             else{
                 errorCallback()  

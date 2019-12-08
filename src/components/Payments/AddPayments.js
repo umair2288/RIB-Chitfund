@@ -1,25 +1,58 @@
 import React, {Component} from 'react'
 import * as titleActions from '../../Actions/TitleActions'
-import {Table, Button , Input, Icon , message} from 'antd'
+import {Table, Button , Input, Icon , message , Modal} from 'antd'
 import Highlighter from 'react-highlight-words'
 import paymentStore from '../../store/PaymentStore'
+import PaymentForm from './PaymentForm'
+
 
 
 class AddPayments extends Component {
 
     state = {
         showPayModal:false,
-        data:[]
+        customerNIC: null,
+        invoice_no : null,
+        data:[],
+        tableData:[]
     }
 
 
-   handleClick = () =>{
+   handleClick = (event) =>{
+    console.log(event.target.id)
        this.setState(
            {
                showPayModal:true,
+               term_id : event.target.id
 
            } , () => console.log(this.state)
        )
+   }
+
+   handleOk = () =>{
+  
+    this.setState(
+        {
+            showPayModal:false,
+            term_id:null,
+
+        } , () => {
+            console.log(this.state)
+           
+        }
+        
+    )
+
+    }
+
+   handleCancel = () =>{
+    this.setState(
+        {
+            showPayModal:false,
+            term_id:null
+
+        } , () => console.log(this.state)
+    )
    }
 
 
@@ -27,20 +60,21 @@ class AddPayments extends Component {
         titleActions.changeTitle("Add Payment")
         paymentStore.getDuePayments(
             ()=>{
-                this.setState({
-                    data:paymentStore.duePaymentsStore
-                },()=>console.log(this.state))
-            }
-            ,
+                this.formatTableData()
+            },
             () => {
                 message.error("Loading due payments failed")
-            }
-        )
+                
+            })
+        paymentStore.on("update",
+        ()=>{     
+            this.formatTableData()     
+        })
+        
     }
 
     formatTableData = () =>{
-        var tableData = []
-        this.state.data.map(
+    var tableData =  paymentStore.duePaymentsStore.map(
             (instalment_plan)=>{
              var data = instalment_plan.overdue_terms.map(
                     (term)=>{
@@ -50,20 +84,19 @@ class AddPayments extends Component {
                             invoice: instalment_plan.invoice.invoice_no,
                             customer_nic: instalment_plan.invoice.customer.NIC,
                             due_amount: term.due_amount,
+                            amount_payable:term.amount_payable,
                             due_date : due_date.getDate() + "-" + (due_date.getMonth()+1) + "-" + due_date.getFullYear(),
-                            button: term.id
-                            
+                            button: term.id       
                         }
                     }
                 )
-               
-                tableData.push(data)
-                
                 return data  
             }
         )
         console.log(tableData)
-        return tableData.flat()
+        this.setState({
+                tableData:tableData.flat()
+            }, () => console.log(this.state))
     }
     
     getColumnSearchProps = dataIndex => ({
@@ -129,7 +162,6 @@ class AddPayments extends Component {
 
 
     columns = [
-       
             {
                 title: 'Invoice',
                 dataIndex: 'invoice',
@@ -148,9 +180,7 @@ class AddPayments extends Component {
               {
                 title: 'Due Amount',
                 dataIndex: 'due_amount',
-                key: 'due_amount',
-                
-        
+                key: 'due_amount',   
               },
               {
                 title: 'Due Date',
@@ -159,7 +189,11 @@ class AddPayments extends Component {
                
         
               }
-
+              ,{
+                title: 'Amount Payable',
+                dataIndex: 'amount_payable',
+                key: 'amount_payabl',   
+              }
               ,
               {
                   title : '',
@@ -173,7 +207,18 @@ class AddPayments extends Component {
         return (
             <div>
                 <h1>List of OverDues</h1>
-            <Table columns={this.columns} pagination={{ pageSize: 10 }}  dataSource={this.formatTableData()} size="small" /> 
+            <Table columns={this.columns} pagination={{ pageSize: 10 }}  dataSource={this.state.tableData} size="small" /> 
+            <Modal 
+             visible={this.state.showPayModal}
+             onOk = {this.handleOk}
+             onCancel = {this.handleCancel}
+             title = "Make Payment"
+             >
+              { this.state.showPayModal &&  <PaymentForm onOk={this.handleOk} visible={this.state.showPayModal} term_id={this.state.term_id}></PaymentForm>}
+            </Modal>
+                 
+                
+            
             </div>
         )
     }

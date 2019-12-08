@@ -133,7 +133,7 @@ class NavigationPane extends Component{
               title={
                 <span>
                   <Icon type="shop" />
-                  <span>Supplier</span>
+                  <span>Supplier(Beta)</span>
                 </span>
               }
             >

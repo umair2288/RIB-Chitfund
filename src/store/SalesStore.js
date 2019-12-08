@@ -8,6 +8,7 @@ class SalesStore extends EventEmitter{
     constructor(){
         super();
         this.sales = []     
+        this.dailySales = []
     }
     
     getTitle(){
@@ -25,6 +26,83 @@ class SalesStore extends EventEmitter{
         else{
             return this.sales
         }
+    }
+
+
+    getDailySales () {
+
+        const today =  new Date()
+        const jsonDate = today.toJSON()
+
+    
+        const currentMonthSales = this.sales.filter(
+            (sale) => {
+                return sale.date.substring(0,7) === jsonDate.substring(0,7)
+            }
+        )
+
+
+        var dates = currentMonthSales.map(
+            (sale) => {
+                return sale.date.substring(0,10)
+            }
+        )
+        
+        dates = [...new Set(dates)]
+        console.log(dates)
+
+        const data = dates.map(
+            (date) => {
+              const sale_on_date = this.sales.filter(
+                  (sale) => {
+                      return date === sale.date.substring(0,10)
+                  }
+              )
+               const totalSale = sale_on_date.reduce (
+                (total , order) => {
+                    return total + order.order_lines.reduce(
+                        (total, orderline) => {
+                            return total + (orderline.unit_price * orderline.quantity - parseInt(orderline.discount_amount))
+                        },0
+                    )
+                } ,0
+
+            )  
+               
+               return {
+                   date : date ,
+                   "Sale Amount": totalSale
+               }
+              
+            } 
+        )
+
+        this.daiySales = data
+        return data
+
+    }
+    
+    getTotalSales(){
+    
+        const today =  new Date()
+        const jsonDate = today.toJSON()
+
+    
+        const todaySales = this.sales.filter(
+            (sale) => {
+                return sale.date.substring(0,10) === jsonDate.substring(0,10)
+            }
+        )
+
+      return  todaySales.reduce(
+            (total , sale) => {
+                return total + sale.order_lines.reduce(
+                    (total,orderline) => {
+                        return total +  ( orderline.unit_price*orderline.quantity - parseInt(orderline.discount_amount))
+                    },0
+                )
+            },0
+        )
     }
 
 

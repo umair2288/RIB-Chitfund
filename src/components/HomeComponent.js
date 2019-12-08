@@ -31,6 +31,7 @@ import EditProduct from './Products/EditProduct';
 import AddCustomerWiz from './AddCustomer/AddCustomerWiz'
 import customerStore from '../store/CustomerStore';
 import ProductRestock from './Products/ProductRestock/ProductRestock';
+import salesStore from '../store/SalesStore';
 const { Header, Content, Footer } = Layout;
 
 
@@ -41,6 +42,7 @@ class Home extends Component
      //  productPieceStore.loadAllProductPieces()
      productPieceStore.loadAllProductPieces(()=>console.log("product pieces loaded"))
      salesStaffStore.loadAllCurrentSalesStaff(()=>console.log("sales staffs loaded"))
+     salesStore.getAllSales()
      customerStore.updateCustomers()
     }
    

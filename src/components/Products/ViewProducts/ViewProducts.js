@@ -9,10 +9,10 @@ class ViewProducts extends React.Component {
     state = {
         productStore : productStore.initialState
     }
-
+ //   window.productStore = this.state.productStore
     componentWillMount () {
         productStore.on("update",()=>{
-            this.setState({productStore:productStore.initialState})
+            this.setState({productStore:productStore.initialState},()=>console.log(this.state))
         })
         titleActions.changeTitle("View Products")
         dispatcher.dispatch({type:"FETCH_ALL_PRODUCTS"})
@@ -26,21 +26,73 @@ class ViewProducts extends React.Component {
         this.props.history.push('/products/'+id)
     }
 
-    render(){
+
+    nestedTable = (rowdata) => {
 
         const columns = [
             {
+                key: "batch",
+                dataIndex: "batch",
+                title: "Batch"
+            },
+            {
+                key: "datein",
+                dataIndex: "datein",
+                title: "Date In"
+            },
+            {
+                key: "available_pieces",
+                dataIndex: "available_pieces",
+                title: "Available pieces"
+            },
+        ]
+
+        const batches = rowdata.batches.filter(
+            (rowdata) => {
+                return rowdata.available_pieces !== 0
+            }
+        )
+
+        const dataSource = batches.map(
+            (batch) => {
+                return {
+                    batch: batch.id,
+                    datein: batch.date_in.substring(0,10),
+                    available_pieces: batch.available_pieces
+                }
+            }
+        )
+
+        return (
+            <Table columns = {columns} dataSource = {dataSource}></Table>
+        )
+    }
+
+
+
+    render(){
+        const columns = [
+            {
                 title : "ID",
-                dataIndex : "id"
+                dataIndex : "id",
+                key:"id"
             },
             {
                 title : "Title",
-                dataIndex : "title"
+                dataIndex : "title",
+                key:"title"
             },
             {
                 title : "Category",
-                dataIndex : "category.title"
+                dataIndex : "category.title",
+                key:"category"
             },
+            {
+                title: "No of Pieces",
+                dataIndex: "no_of_pieces",
+                key: "no_of_pieces"
+            },
+
             {
                 render : (product) => <Button onClick = {()=>this.onEdit(product.id)} type = "primary" >Edit</Button>
             },
@@ -53,14 +105,23 @@ class ViewProducts extends React.Component {
         let newProducts = []
         for (let product of products){
             if(product.is_current){
-                newProducts.push(product)
+                newProducts.push({
+                    ...product , 
+                    key:product.id,
+                    no_of_pieces: product.batches.reduce((sum,value) => {
+                        return sum + value.available_pieces
+                    },0)
+                })
             }
         }
+        console.log(newProducts)
         return (
             <Table
                 loading = {loading}
                 columns = {columns}
+                expandedRowRender = {this.nestedTable}
                 dataSource = {newProducts}
+                size="small"
             />
         )
     }

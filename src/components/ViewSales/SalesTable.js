@@ -94,10 +94,11 @@ class SalesTable extends Component{
      return   this.state.data.map (
             (sale) => {
                 return {
+                    key:sale.id,
                     invoice : sale.invoice_no,
                     product_id : sale.order_lines[0].product.item_code,
                     customer_nic: sale.customer.NIC,
-                    paymentStatus: "Unknown"
+                    paymentStatus: sale.payment_status
                 }
             }
         )
