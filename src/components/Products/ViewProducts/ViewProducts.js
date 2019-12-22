@@ -1,15 +1,24 @@
 import React from 'react'
-import { Table, Button } from 'antd';
+import { Table, Button, Input ,Row,Col, Modal, message } from 'antd';
 import dispatcher from '../../../dispatcher/dispatcher';
 import * as titleActions from '../../../Actions/TitleActions'
 import productStore from '../../../store/ProductsStore';
+import productPieceStore from '../../../store/ProductPieceStore'
+import ProductPieceDetails from '../ProductPieceDetails'
+import Axios from 'axios';
+import keys from '../../../keys';
 
 class ViewProducts extends React.Component {
 
     state = {
-        productStore : productStore.initialState
+        productStore : productStore.initialState,
+        product_piece_view : false,
+
+        product_piece : null
     }
- //   window.productStore = this.state.productStore
+
+
+
     componentWillMount () {
         productStore.on("update",()=>{
             this.setState({productStore:productStore.initialState},()=>console.log(this.state))
@@ -25,6 +34,7 @@ class ViewProducts extends React.Component {
     onEdit = id => {
         this.props.history.push('/products/'+id)
     }
+
 
 
     nestedTable = (rowdata) => {
@@ -67,6 +77,45 @@ class ViewProducts extends React.Component {
             <Table columns = {columns} dataSource = {dataSource}></Table>
         )
     }
+
+
+        handleCancel = () => {
+
+
+
+
+            this.setState({
+               product_piece_view : false
+            })
+        }
+
+        handleOk = () =>{
+            this.setState({
+                product_piece_view : false
+             })
+        }
+
+        handleClick = () => {
+
+            const pp = productPieceStore.getProductPieceByCode(this.state.pp_code)
+            
+            if(pp){
+                this.setState({
+                    product_piece_view : true,
+                    product_piece: pp
+                 },()=>console.log(this.state))
+            }else{
+                message.error("Product Piece ID is Invalid")
+            }
+
+            
+        }
+
+        handleChange = (e) => {
+            this.setState({
+                pp_code:e.target.value
+            })
+        }
 
 
 
@@ -116,13 +165,37 @@ class ViewProducts extends React.Component {
         }
         console.log(newProducts)
         return (
-            <Table
-                loading = {loading}
-                columns = {columns}
-                expandedRowRender = {this.nestedTable}
-                dataSource = {newProducts}
-                size="small"
-            />
+
+            <span>
+                <Row gutter={[10,20]} >
+                    <Col offset={16} span={4}>
+                        <Input onChange={this.handleChange} placeholder="Product Piece ID"/> 
+                    </Col>
+                    <Col  span={4}>
+                      <Button onClick={this.handleClick}>Show Details</Button>
+                    </Col>
+                </Row>
+                <Row gutter={[10,20]}>
+                <Table
+                    loading = {loading}
+                    columns = {columns}
+                    expandedRowRender = {this.nestedTable}
+                    dataSource = {newProducts}
+                    size="small"
+                />
+                </Row>
+
+              
+                <Modal
+                    title="Product Piece"
+                    visible={this.state.product_piece_view}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    >
+                   <ProductPieceDetails {...this.state.product_piece}/>
+                </Modal>
+               
+            </span>
         )
     }
 }

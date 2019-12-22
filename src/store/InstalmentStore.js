@@ -12,6 +12,12 @@ class InstalmentStore extends EventEmitter{
     }
     
 
+
+    
+
+
+
+
     getInstalmentTermById(id,successCallback,errorCallback){
         
 

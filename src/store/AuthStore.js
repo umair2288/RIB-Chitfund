@@ -61,6 +61,7 @@ class AuthStore extends EventEmitter {
         this.loadingStart()
         Axios.post(url,data)
         .then(({data})=>{
+            console.log(data)
             if(data.token){
                 localStorage.setItem('token',data.token)
                 this.initialState.token = data.token
@@ -70,6 +71,7 @@ class AuthStore extends EventEmitter {
                 console.log("Login failed")
                 message.error("Username or password is wrong")
             }
+            
         })
         .catch(error=>{
             message.error("Login failed")

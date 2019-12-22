@@ -26,6 +26,7 @@ import AddPayments from './Payments/AddPayments'
 import ViewPayments from './Payments/ViewPayment'
 
 import EditProduct from './Products/EditProduct';
+import MoveProducts from './Products/MoveProducts/MoveProducts'
 
 
 import AddCustomerWiz from './AddCustomer/AddCustomerWiz'
@@ -78,6 +79,7 @@ class Home extends Component
                                 <Route path="/category/:catId" component={EditCategory}/>
                                 <Route path="/deletedcategories" component={DeletedCategories}/>
                                 <Route path="/instalmentplan/:planId" component={InstalmentPlan}/>
+                                <Route path="/moveproducts" component={MoveProducts}/>
 
                                 <Route path="/addpayments/" component={AddPayments}/>
                                 <Route path="/viewpayments/" component={ViewPayments}/>

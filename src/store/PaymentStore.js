@@ -90,7 +90,7 @@ class PaymentStore extends EventEmitter{
 
 
     fetchPayments = (successCallback,errorCallback ) => {
-        const URL = keys.server + "/sales/receipts/"
+        const URL = keys.server + "/sales/receipts/royalmarketing"
         const OPTIONS = {
             method:"GET",
             headers : {

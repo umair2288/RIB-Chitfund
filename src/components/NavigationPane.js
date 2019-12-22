@@ -110,6 +110,7 @@ class NavigationPane extends Component{
                 </span>
               }
             >
+             <Menu.Item key="moveproduts">  <Link to='/moveproducts'>Move Products</Link></Menu.Item>
               <Menu.Item key="productrestock">  <Link to='/productrestock'>Restock Products </Link></Menu.Item>
               <Menu.Item key="addproduct">  <Link to='/addproduct'>Add Product </Link></Menu.Item>
               <Menu.Item key="viewproducts"><Link to='/viewproducts'>View Products</Link></Menu.Item>
