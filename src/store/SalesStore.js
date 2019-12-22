@@ -40,8 +40,6 @@ class SalesStore extends EventEmitter{
                 return sale.date.substring(0,7) === jsonDate.substring(0,7)
             }
         )
-
-
         var dates = currentMonthSales.map(
             (sale) => {
                 return sale.date.substring(0,10)
@@ -107,7 +105,7 @@ class SalesStore extends EventEmitter{
 
 
    getAllSales(successCallback,errorCallback){
-       const URL = keys.server + "/sales/get-orders/?invoice=all"
+       const URL = keys.server + "/sales/get-orders/royalmarketing/?invoice=all"
        const OPTIONS = {
         method:"GET",
         headers : {

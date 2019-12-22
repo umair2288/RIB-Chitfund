@@ -98,7 +98,8 @@ class SalesTable extends Component{
                     invoice : sale.invoice_no,
                     product_id : sale.order_lines[0].product.item_code,
                     customer_nic: sale.customer.NIC,
-                    paymentStatus: sale.payment_status
+                    paymentStatus: sale.payment_status,
+                    instalment_plan_id:sale.instalment_plan_id
                 }
             }
         )
@@ -135,6 +136,12 @@ class SalesTable extends Component{
                 dataIndex: 'paymentStatus',
                 key: 'paymentStatus',
               },   
+              {
+                title: '',
+                dataIndex: 'instalment_plan_id',
+                key: 'instalment_plan_id',
+                render: id => <Button type="primary" icon="user" onClick={(e) => this.props.handleViewInstalmentPlan(e.target.id)} id={id}>Instalment Plan</Button>,
+              }
     
         ]    
 

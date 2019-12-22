@@ -11,7 +11,8 @@ class Login extends Component{
         super()
         this.state ={
             username : "",
-            password : ""
+            password : "",
+            emp_type : "Office Staff"
         }
     }
 

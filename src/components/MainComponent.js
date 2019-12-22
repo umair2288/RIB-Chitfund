@@ -20,7 +20,11 @@ class MainComponent extends Component
 
     render(){
         const {token,loading} = this.state.authStore
-        return !loading ? token == null ? <LoginPage/> : <Home token={token}/> : <div style = {{display:'flex',width:'100vw',justifyContent:'center',height:'100vh',alignItems:'center'}}><Spin indicator = {<Icon type = "loading" />}  spinning tip="Loading..." size="large" delay={0} /></div>
+        return !loading ? token == null ? 
+                <LoginPage/> : <Home token={token}/> : 
+                <div style = {{display:'flex',width:'100vw',justifyContent:'center',height:'100vh',alignItems:'center'}}>
+                    <Spin indicator = {<Icon type = "loading" />}  spinning tip="Loading..." size="large" delay={0} />
+                </div>
           
     }
 }
