@@ -1,7 +1,7 @@
 
  const keys = {
 
-    server: "http://51.79.87.210:8000"
+    server: "http://127.0.0.1:8000"
 
 
 }

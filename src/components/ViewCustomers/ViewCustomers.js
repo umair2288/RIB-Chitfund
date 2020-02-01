@@ -6,6 +6,8 @@ import * as titleActions from '../../Actions/TitleActions'
 import * as customerActions from '../../Actions/CustomerActions'
 import customerStore from '../../store/CustomerStore'
 import CustomerProfile from './CustomerProfile';
+import { connect } from 'react-redux';
+import { fetchCustomers } from '../../redux/customer/actionCreators';
 
 
 
@@ -103,7 +105,7 @@ class ViewCustomers extends Component{
     componentDidMount(){
         titleActions.changeTitle("Customers")  
         customerActions.updateCustomers() //fetching data and updates the store
-
+        this.props.fetchCustomers()
         customerStore.on('update',()=>{
             const customers =  customerStore.getAllCustomers()
             const tableData = customers.map(this.formatTableData)
@@ -163,7 +165,7 @@ class ViewCustomers extends Component{
     render(){
         return (
           <div>
-            <Table columns={this.columns} pagination={{ pageSize: 10 }}  dataSource={this.state.data} size="small" /> 
+            <Table loading={this.props.loading} columns={this.columns} pagination={{ pageSize: 10 }}  dataSource={this.props.customers.map(this.formatTableData)} size="small" /> 
             <Drawer
                 title="Customer Details"
                 placement="right"
@@ -180,4 +182,19 @@ class ViewCustomers extends Component{
     }
 }
 
-export default ViewCustomers;
+const mapStateToProps = state =>{
+ return   {
+        customers: state.customer.customers,
+        loading: state.customer.loading
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        fetchCustomers: () => dispatch(fetchCustomers())
+    }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(ViewCustomers)
+

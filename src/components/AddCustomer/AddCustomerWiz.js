@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import { Steps, Button, message , Form , Row, Col , Input , Modal} from 'antd';
+import * as titleActions from '../../Actions/TitleActions'
 import customerStore from '../../store/CustomerStore';
 
 
@@ -20,6 +21,9 @@ class AddCustomerWiz extends Component {
         };
 
     
+        componentDidMount(){
+            titleActions.changeTitle("Add New Customer")
+        }
    
 
     steps = [
@@ -42,11 +46,8 @@ class AddCustomerWiz extends Component {
             event.preventDefault()
             console.log(this.props.form)
             const val = event.target.value
-
             switch(event.target.name){
-
                 case "nic_input":{
-
                     this.setState(
                         (prevState)=>
                         {
@@ -370,12 +371,14 @@ class AddCustomerWiz extends Component {
                 "Town":this.state.customer.address_town,
                 "District":this.state.customer.address_district
             }
-        }
+        },
+        "entity": [3]
     }
    customerStore.addCustomer(customer,
     ()=>{
         message.success("Customer added successfully")
-        this.showConfirm(this.props,this.state,this.backToStart)
+        this.backToStart()
+      //  this.showConfirm(this.props,this.state,this.backToStart)
        
     },
     () =>{
