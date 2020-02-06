@@ -27,7 +27,7 @@ const productPiecesReducer = (state = initial_state , action)=>{
             return {
                 ...state,
                 loading: false,
-                products : action.payload
+                productPieces : action.payload
             }
         }
         case FETCH_PRODUCT_PIECES_FAILED:{

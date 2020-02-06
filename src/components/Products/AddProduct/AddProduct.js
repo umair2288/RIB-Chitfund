@@ -40,7 +40,7 @@ class AddProduct extends React.Component {
         return (
             <Form id="add-product-form" onSubmit = {this.onSubmit} >
                 <Form.Item label = "Title" >
-                    <Input name = {"title"} placeholder={"Product Name"} onChange = {(e)=>this.setState({[e.target.name]:e.target.value})} required />
+                    <Input maxLength={20} name = {"title"} placeholder={"Product Name"} onChange = {(e)=>this.setState({[e.target.name]:e.target.value})} required />
                 </Form.Item>
                 <Form.Item label = "Category" >
                     <Select

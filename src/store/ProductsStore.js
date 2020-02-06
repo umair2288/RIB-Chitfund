@@ -86,7 +86,7 @@ class ProductStore extends EventEmitter {
     
     getWarehouses(callback){
 
-        const URL = keys.server+'/warehouse/get-warehouses/?type=royalmarketing'
+        const URL = keys.server+'/warehouse/get-warehouses/?type=chitfund'
         const OPTIONS = {
             method:"GET",
             headers : {

@@ -1,8 +1,11 @@
 import React , {Component} from 'react'
-import { Input, Form, Row, Col, Select, Button } from 'antd'
+import { Input, Form, Row, Col, Select, Button, message } from 'antd'
 import { connect } from 'react-redux'
 import {fetchCustomers , fetchCustomerGroups} from '../../redux/customer/actionCreators'
 import { fetchProductPieces } from '../../redux/product/actions/actionCreators'
+import {addSale , fetchSales} from '../../redux/sales/actions/actionCreators'
+import * as titleAction from '../../Actions/TitleActions'
+import SalesTable from './SalesTable'
 
 
 const {Option}  = Select
@@ -11,7 +14,9 @@ class GroupSales extends Component{
 
     state = {
         group_id : this.props.match.params.id,
-        group:{id:null}
+        group:{id:null , customers:[]},
+        customers : [],
+        customer_ids : []
     }
 
 
@@ -19,22 +24,12 @@ class GroupSales extends Component{
         this.props.fetchCustomers()
         this.props.fetchCustomerGroups()
         this.props.fetchProductPieces()
+        this.props.fetchSales()
+        this.filterCustormers(this.state.group_id)
+        titleAction.changeTitle("Group Sales")
     }
 
-    // componentDidUpdate(){
-    //     if(this.state.group_id !== this.state.group.id){
-    //         this.setState(
-    //             (prevState) => {
-    //                 const group = this.props.customerGroups.filter(
-    //                     (group) => {
-    //                          return group.id === prevState.group_id
-    //                     }
-    //                 ).pop() 
-    //              return {group}  
-    //             }
-    //         , () => console.log(this.state))
-    //     }
-    // }
+
    
     handleChange = (e) => {
         e.preventDefault()
@@ -42,7 +37,14 @@ class GroupSales extends Component{
             case "group_id":{
                 this.setState({
                     group_id : e.target.value
-                }, () => console.log(this.state))
+                }, () => {
+                    console.log(this.state)
+                     this.setState({
+                        customers:this.filterCustormers(this.state.group_id).customers,
+                    } , () => console.log(this.state))
+                   // this.filterCustormers(this.state.group_id)
+                })
+                break;
             }
             case "product_pc_id":{
                 this.setState(
@@ -50,6 +52,7 @@ class GroupSales extends Component{
                         pp_id: e.target.value
                     }
                 )
+                break ;
             }
         }
     }
@@ -69,12 +72,20 @@ class GroupSales extends Component{
                 (customer) => {
                     return customer_ids.includes(customer.id)
                 }
-            )
-           
-            return customers
+            )  
+            
+            
+            return  {
+                        customers:customers,
+                        customer_ids :customer_ids
+                    }   
         }
 
-        return []  
+        return  {
+            customers:[],
+            customer_ids :[]
+        }   
+   
     }
 
 
@@ -88,6 +99,45 @@ class GroupSales extends Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
+        var group = this.props.customerGroups.filter(
+           (customerGroup) => {
+               return customerGroup.id  === parseInt(this.state.group_id)
+           }
+        ).pop()
+           
+       if(group){
+           var product = group.product;
+           var pp =  this.props.productPieces.productPieces.filter(
+               pp => {
+                   return pp.item_code === this.state.pp_id
+               }
+           ).pop()
+
+           if(pp){
+                if(pp.batch.product.id === product){
+                    message.success("adding sale to customer")
+                    const data = {
+                        customer : this.state.customer_id,
+                        order_lines : [
+                            {
+                                "product" : pp.id,
+                                "unit_price":parseFloat(pp.sell_price),
+                                "discount_amount":0,
+                                "quantity":1
+  	                        }
+                        ],
+                        customer_group: this.state.group_id,
+                        amount: parseFloat(pp.sell_price)
+                    }
+                    this.props.addSale(data)
+                }else{
+                    message.error(`Product Piece is not valid,You can add ${pp.batch.product.title} only`)
+                }
+
+           }else{
+               message.error("Invalid Product code, this product not available in chit fund warehouse")
+           }
+       }
         
     }
 
@@ -96,36 +146,29 @@ class GroupSales extends Component{
     render(){
         return (
             <div>
+                <Row gutter={20}>
+                <Col >
                 <Form onSubmit={this.handleSubmit}>
-                    <Row>
-                        {/* <Col span={6}>
-                            <Form.Item label="Group ID">
-                                <Input name="group_id" disabled={this.props.match.params.id} onChange={this.handleChange} value={this.state.product_id}></Input>
-                            </Form.Item>
-                        </Col> */}
+                  
                         <Col span={6}>
                             <Form.Item label="Group ID">
                                 <Input name="group_id" disabled={this.props.match.params.id} onChange={this.handleChange} value={this.state.group_id}></Input>
                             </Form.Item>
                         </Col>
-                    </Row>
-                    <Row gutter={10}>
+                   
                         <Col span={6}>
                             <Form.Item label="Customer">
                                <Select onChange={this.onCustomerSelectChange}>
                                    {
-                                       this.filterCustormers(this.state.group_id).map(
-                                           (customer) =>{
-                                           return ( <Option value={customer.id}>
+                                       this.filterCustormers(this.state.group_id).customers.map(
+                                           (customer,index) =>{
+                                           return ( <Option key={index} value={customer.id}>
                                                     {customer.contact.FirstName + " " + customer.contact.LastName + "-" + customer.NIC }
                                                
                                                </Option> )
                                            }
                                        )
                                    }
-                                    {/* <Option value={1}>
-                                        hi
-                                    </Option> */}
                                </Select>
                             </Form.Item>
                         </Col>
@@ -133,15 +176,20 @@ class GroupSales extends Component{
                             <Form.Item label="Product Piece ID">
                                <Input name="product_pc_id" onChange={this.handleChange}  value={this.state.pp_id}></Input>
                             </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}>
+                        </Col>    
+                        <Col span={6} style={{paddingTop:43}}>
                             <Button htmlType="submit" type="primary"> Add Sale</Button>
-                        </Col>
-                    </Row>
+                        </Col>            
                 </Form>
-         
+                </Col>
+               
+                </Row>
+                <Row>
+                <Col >
+                    <h3>Group Sales Details</h3>
+                    {  this.state.customer_ids && <SalesTable group_id={this.state.group_id} customer_ids={this.state.customer_ids}></SalesTable> }
+                </Col>
+                </Row>
         </div>
         )
     }
@@ -152,7 +200,9 @@ const mapDispatchToProps = dispatch =>{
     return{
         fetchCustomers : () => dispatch(fetchCustomers()),
         fetchCustomerGroups : () => dispatch(fetchCustomerGroups()),
-        fetchProductPieces : () => dispatch(fetchProductPieces())
+        fetchProductPieces : () => dispatch(fetchProductPieces()),
+        addSale: (saleData) => dispatch(addSale(saleData)),
+        fetchSales : () => dispatch(fetchSales())
     }
 }
 
@@ -160,6 +210,7 @@ const mapStateToProps = state => {
     return {
         customers : state.customer.customers,
         customerGroups : state.customer.customerGroups,
+        productPieces : state.productPieces,
         loading : state.customer.loading
     }
 }

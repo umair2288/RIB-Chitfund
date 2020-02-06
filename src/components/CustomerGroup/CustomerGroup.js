@@ -151,6 +151,7 @@ class CustomerGroup extends Component {
     }
 
     handleAddSaleToGroup = (group_id) =>{
+        this.props.history.push(`groupsales/${group_id}`)
         console.log(group_id)
     }
 

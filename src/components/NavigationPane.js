@@ -86,8 +86,6 @@ class NavigationPane extends Component{
               }
             >
                 <Menu.Item key="groupSales">  <Link to='/groupsales'>Group Sales </Link></Menu.Item>
-              <Menu.Item key="addSale">  <Link to='/addsale'>Add Sale </Link></Menu.Item>
-              <Menu.Item key="viewOrders"><Link to='/viewsales'>View Orders</Link></Menu.Item>
             </SubMenu>
 
             <SubMenu
@@ -112,7 +110,6 @@ class NavigationPane extends Component{
                 </span>
               }
             >
-             <Menu.Item key="moveproduts">  <Link to='/moveproducts'>Move Products</Link></Menu.Item>
               <Menu.Item key="productrestock">  <Link to='/productrestock'>Restock Products </Link></Menu.Item>
               <Menu.Item key="addproduct">  <Link to='/addproduct'>Add Product </Link></Menu.Item>
               <Menu.Item key="viewproducts"><Link to='/viewproducts'>View Products</Link></Menu.Item>

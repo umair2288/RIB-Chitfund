@@ -28,7 +28,8 @@ export const fetchProductPieces = () => {
         Axios.get(keys.server+"/warehouse/product-pieces/4")
         .then(
             result => {
-                dispatch(fetchProductPiecesSuccess(result.data.data))
+                console.log(result)
+                dispatch(fetchProductPiecesSuccess(result.data))
             }
         )
         .catch(
