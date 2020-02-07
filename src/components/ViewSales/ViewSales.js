@@ -20,11 +20,19 @@ class ViewSales extends Component {
        
     }
 
+    handleViewInstalmentPlan = (id) => {
+        console.log(id)
+        console.log(this.props)
+        this.props.history.push('/instalmentplan/'+id)
+    }
+
+
+
 
     render(){
         return (
             <div>
-                <SalesTable></SalesTable>
+                <SalesTable handleViewInstalmentPlan = {this.handleViewInstalmentPlan}></SalesTable>
                    <Drawer
                 title="Instalment Plan"
                 placement="right"

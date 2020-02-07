@@ -3,7 +3,6 @@ import {Table,  message , Button , Icon , Input} from 'antd'
 import Highlighter from 'react-highlight-words';
 import saleStore from '../../store/SalesStore'
 import { connect } from 'react-redux';
-import { fetchSales } from '../../redux/sales/actions/actionCreators';
 
 class SalesTable extends Component{
 
@@ -11,22 +10,7 @@ class SalesTable extends Component{
         data:saleStore.getSalesByCustomer(this.props.customer_id)
     }
 
-    componentDidMount(){
-        this.props.fetchSales()
-        // saleStore.getAllSales(()=>{
-        //     this.setState(
-        //         {
-        //             data:saleStore.getSalesByCustomer(this.props.customer_id)}
-        //         ,
-        //         () => {
-        //             console.log(this.state)
-        //             console.log("sales data loaded successfully")
-        //         })
-        // } ,
-        // ()=>{
-        //     message.error("error in loading sales, check your internet connection")
-        // })
-    }
+   
 
     getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -94,23 +78,25 @@ class SalesTable extends Component{
 
     formatTableData = () => {
 
-        var sales = this.props.sales.sales.filter(
-            (sale) => {
-                return sale.customer.id === parseInt(this.props.customer_id)
-            }
-        )
-        
+    var sales = this.props.sales.sales.filter(
+        sale => {
+            return parseInt(this.props.group_id) === sale.customer_group
+        }
+    )
+    
 
-        console.log(sales)
+    console.log(sales)
 
-        return sales.map (
+     return   sales.map (
             (sale) => {
                 return {
                     key:sale.id,
                     invoice : sale.invoice_no,
                     product_id : sale.order_lines[0].product.item_code,
                     customer_nic: sale.customer.NIC,
-                    customer_group : sale.customer_group
+                    paymentStatus: sale.payment_status,
+                    instalment_plan_id:sale.instalment_plan_id,
+                    date : sale.date.substr(0,10)
                 }
             }
         )
@@ -140,37 +126,36 @@ class SalesTable extends Component{
                 dataIndex: 'customer_nic',
                 key: 'customer_nic',
                 ...this.getColumnSearchProps('customer_nic')
-              },  
-    
+              }
+              ,
               {
-                title: 'Group Number',
-                dataIndex: 'customer_group',
-                key: 'customer_group',
+                title: 'Date',
+                dataIndex: 'date',
+                key: 'date',
+                ...this.getColumnSearchProps('date')
               }
     
         ]    
 
+       
+
         render(){
-            return <Table columns={this.columns} pagination={{ pageSize: 10 }}  dataSource={this.formatTableData()} size="small" /> 
+            console.log(this.props.sales)
+            return <Table loading={this.props.sales.loading} columns={this.columns} pagination={false}  dataSource={this.formatTableData()} size="small" /> 
      
             
         }
 
 
 }
+
+
 const mapStateToProps = state => {
     return {
-        sales : state.sales
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchSales : () => dispatch(fetchSales())
+        sales : state.sales     
     }
 }
 
 
 
-
-export default connect(mapStateToProps , mapDispatchToProps)(SalesTable);
+export default connect(mapStateToProps)(SalesTable);

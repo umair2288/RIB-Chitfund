@@ -158,7 +158,8 @@ class AddSale extends Component{
                     let data = {
                         ...this.state.sale,
                         customer_id:this.state.customer.id,
-                        product_piece_id:this.state.product.id
+                        product_piece_id:this.state.product.id,
+                        entity:"ROYALMARKETING"
                     }
                     const OPTIONS = {
                         
@@ -288,10 +289,19 @@ class AddSale extends Component{
             (product_pieces) =>{
                 this.setState({
                     product_pieces: product_pieces
-                },()=>console.log(this.state))
-            })
+                },()=>{
+                    this.setState( (prevState) => {
+
+                        const product_pieces = prevState.product_pieces.filter( (pp) => {return !pp.is_soled})   
+                        return {
+                            product_pieces:product_pieces
+                            }
+                               
+                            }
+                    )
+                })})}
+            
         
-    }
 
     render(){
         console.log(this.props.match)

@@ -71,8 +71,9 @@ class NavigationPane extends Component{
                 </span>
               }
             >
-           <Menu.Item key="addCustomer"> <Link to='/addcustomer'>Add Customer </Link></Menu.Item>
-           <Menu.Item key="viewCustomers"><Link to='/viewcustomers'>View Customers</Link></Menu.Item>
+                <Menu.Item key="addCustomer"> <Link to='/addcustomer'>Add Customer </Link></Menu.Item>       
+                <Menu.Item key="viewCustomers"><Link to='/viewcustomers'>View Customers</Link></Menu.Item>
+                <Menu.Item key="CustomerGroups"><Link to='/customergroups'>Customer Groups</Link></Menu.Item>
             
             </SubMenu>
             <SubMenu
@@ -84,8 +85,7 @@ class NavigationPane extends Component{
                 </span>
               }
             >
-              <Menu.Item key="addSale">  <Link to='/addsale'>Add Sale </Link></Menu.Item>
-              <Menu.Item key="viewOrders"><Link to='/viewsales'>View Orders</Link></Menu.Item>
+                <Menu.Item key="groupSales">  <Link to='/groupsales'>Group Sales </Link></Menu.Item>
             </SubMenu>
 
             <SubMenu

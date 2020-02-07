@@ -24,9 +24,12 @@ import salesStaffStore from '../store/SalesStaffStore'
 import InstalmentPlan from './Instalment/InstalmentPlan';
 import AddPayments from './Payments/AddPayments'
 import ViewPayments from './Payments/ViewPayment'
+import CustomerGroup from './CustomerGroup/CustomerGroup'
 
 import EditProduct from './Products/EditProduct';
+import MoveProducts from './Products/MoveProducts/MoveProducts'
 
+import GroupSales from './Sales/GroupSales'
 
 import AddCustomerWiz from './AddCustomer/AddCustomerWiz'
 import customerStore from '../store/CustomerStore';
@@ -65,6 +68,8 @@ class Home extends Component
                                 <Route path="/addsale/:NIC" component={AddSale}/>
                                 <Route path="/addsale" exact component={AddSale}/>
                                 <Route path="/viewsales" component={ViewSales}/>
+                                <Route path="/groupsales/:id" component={GroupSales}/>
+                                <Route exact path="/groupsales/" component={GroupSales}/>
                                 <Route path="/profile" component={Profile}/>
                                 <Route path="/addsupplier" component={AddSupplier}/>
                                 <Route path="/viewsuppliers" component={ViewSuppliers}/>
@@ -78,7 +83,8 @@ class Home extends Component
                                 <Route path="/category/:catId" component={EditCategory}/>
                                 <Route path="/deletedcategories" component={DeletedCategories}/>
                                 <Route path="/instalmentplan/:planId" component={InstalmentPlan}/>
-
+                                <Route path="/moveproducts" component={MoveProducts}/>
+                                <Route path="/customergroups" component={CustomerGroup} />
                                 <Route path="/addpayments/" component={AddPayments}/>
                                 <Route path="/viewpayments/" component={ViewPayments}/>
                                 {/* <Route path="/productbatch/1" component={QRCodes}/> */}

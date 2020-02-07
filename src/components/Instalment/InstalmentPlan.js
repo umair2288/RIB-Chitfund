@@ -1,6 +1,8 @@
 import React,{Component} from 'react'
 import instalmentStore from './../../store/InstalmentStore'
 import {Col, Row, Table} from 'antd'
+import Axios from 'axios'
+import keys from '../../keys'
 
 class InstalmentPlan extends Component{
 
@@ -13,6 +15,7 @@ class InstalmentPlan extends Component{
     }
 
     componentDidMount(){
+        console.log(this.props)
            
        if(instalmentStore.getInstalmePlanById(this.props.match.planId).length > 0 ){
             let data = instalmentStore.getInstalmePlanById(this.props.match.planId).pop()
@@ -22,7 +25,31 @@ class InstalmentPlan extends Component{
                 }
                 , ()=> console.log(this.state)
             )
+       }else{
+            Axios.get(`${keys.server}/instalments/plan/${this.props.match.params.planId}`)
+            .then(
+                (response) => {
+                    const data = response.data.pop()
+                    this.setState(
+                        {
+                         data:{
+                             instalment_plan: data,
+                             instalment_terms: data.instalment_terms
+                         }
+                        }
+                        , ()=> console.log(this.state)
+                    )
+
+                }
+            )
+            .catch(
+                err => {
+                    console.log(err)
+                }
+            )
        }
+
+       
          
     }
 
